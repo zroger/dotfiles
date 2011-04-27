@@ -1,0 +1,5 @@
+alias reload='. ~/.bash_profile'
+
+# Do you like a colorful grep? I do!
+alias grep="grep --color=auto"
+

@@ -1,0 +1,38 @@
+[ui]
+username = Roger Lopez <rlopez@treehouseagency.com>
+verbose = True
+merge = diffmerge
+
+[extensions]
+hgext.convert=
+hgext.fetch=
+hgext.purge=
+hgext.mq=
+hgext.extdiff=
+hgext.hgshelve=/Library/Python/2.6/site-packages/hgext/hgshelve/hgshelve.py
+
+[diff]
+nodates=1
+
+[extdiff]
+cmd.diffmerge = /usr/local/bin/diffmerge
+
+[merge-tools]
+diffmerge.executable = /usr/local/bin/diffmerge
+diffmerge.args = --result=$output -t1="Local Version" -t2=$output -t3="Other Version" --caption=$output  $local $base $other
+diffmerge.binary = False
+diffmerge.symlinks = False
+diffmerge.gui = True
+diffmerge.premerge = True
+
+[alias]
+changelog = outgoing --no-merges --template "Revision {node|short} by {author} on {date|shortdate}:\n{desc}\n\n"
+incoming-changelog = incoming --no-merges --template "Revision {node|short} by {author} on {date|shortdate}:\n{desc}\n\n"
+
+[defaults]
+diff = --git
+
+[convert]
+#cvsps = cvsps -A -u --cvs-direct -q
+cvsps = cvsps -A -u
+

@@ -1,0 +1,10 @@
+# This loads RVM into a shell session.
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"  
+
+# Terminal coloring
+export CLICOLOR=1
+
+# Colorized Prompt
+PS1='\[\e[1;32m\][\u@\h \W]\$\[\e[0m\] '
+
+export EDITOR=/usr/bin/vi

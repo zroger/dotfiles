@@ -1,0 +1,6 @@
+export PATH=/Applications/MAMP/Library/bin:$PATH
+export PATH=/Library/Ruby/Gems/1.8/bin:$PATH
+
+# Add brew python bin to PATH for easy_install
+export PATH=/usr/local/Cellar/python/2.7.1/bin:$PATH
+
