@@ -3,5 +3,7 @@ alias reload='. ~/.bash_profile'
 # Do you like a colorful grep? I do!
 alias grep="grep --color=auto"
 
-alias volume="arch -i386 osascript -e \"set volume output volume $1\""
+function volume {
+  arch -i386 osascript -e "set volume output volume $1"
+}
 
