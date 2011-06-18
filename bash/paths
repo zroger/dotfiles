@@ -1,11 +1,25 @@
-export PATH=/Applications/MAMP/Library/bin:$PATH
 export PATH=/Library/Ruby/Gems/1.8/bin:$PATH
 
-# Add brew python bin to PATH for easy_install
-export PATH=/usr/local/Cellar/python/2.7.1/bin:$PATH
+# Additional paths if brew is installed
+if [ "$(which brew)" != "" ]; then
+  # Add brew python bin to PATH for easy_install
+  export PATH=$(brew --prefix python)/bin:$PATH
 
-# Make sure brew path comes first so its executables
-# are found before defaults.  Specifically helpful for
-# php and other things already provided by OSX.
-export PATH=`brew --prefix`/bin:$PATH
+  # Brew npm bin
+  export PATH=/usr/local/share/npm/bin:$PATH
+
+  # Make sure brew path comes first so its executables
+  # are found before defaults.  Specifically helpful for
+  # php and other things already provided by OSX.
+  export PATH=`brew --prefix`/bin:$PATH
+
+  # node.js lib path for brew
+  export NODE_PATH=`brew --prefix`/lib/node
+fi
+
+# Settings for Mapnik.framework Installer to enable Mapnik programs and python 
+if [ -d /Library/Frameworks/Mapnik.framework ]; then
+  export PATH=/Library/Frameworks/Mapnik.framework/Programs:$PATH
+  export PYTHONPATH=/Library/Frameworks/Mapnik.framework/Python:$PYTHONPATH
+fi
 
