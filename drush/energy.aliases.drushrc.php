@@ -9,3 +9,13 @@ $aliases['local'] = array(
     ),
   ),
 );
+
+$aliases['dev'] = array(
+  'remote-host' => 'dev.cms.doe.gov',
+  'remote-user' => 'rlopez',
+  'root' => '/var/www/vhosts/energy.gov/docroot',
+  'path-aliases' => array(
+    '%dump-dir' => '/tmp/',
+  ),
+);
+
