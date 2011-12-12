@@ -4,6 +4,7 @@ export PATH=/Library/Ruby/Gems/1.8/bin:$PATH
 if [ "$(which brew)" != "" ]; then
   # Add brew python bin to PATH for easy_install
   export PATH=$(brew --prefix python)/bin:$PATH
+  export PATH=/usr/local/share/python:$PATH
 
   # Brew npm bin
   export PATH=/usr/local/share/npm/bin:$PATH

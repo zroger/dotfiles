@@ -43,7 +43,7 @@ bash_prompt() {
   GIT_INFO='$(__git_ps1 " on %s")'
 
   # space goes inside the printf so its not there when there's no git branch
-  PS1="${UC}\u${B}@\h${RET_VALUE} ${EMY}\w${EMM}${GIT_INFO}${EMW}\n${NONE} "
+  PS1="${UC}\u${B}@\h${RET_VALUE} ${EMY}\w${EMM}${GIT_INFO}${EMW}${NONE} "
   PS4='+$BASH_SOURCE:$LINENO:$FUNCNAME: '
 }
 
