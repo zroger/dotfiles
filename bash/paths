@@ -12,7 +12,7 @@ if [ "$(which brew)" != "" ]; then
   # Make sure brew path comes first so its executables
   # are found before defaults.  Specifically helpful for
   # php and other things already provided by OSX.
-  export PATH=`brew --prefix`/bin:$PATH
+  export PATH=`brew --prefix`/bin:`brew --prefix`/sbin:$PATH
 
   # node.js lib path for brew
   export NODE_PATH=`brew --prefix`/lib/node
@@ -24,3 +24,7 @@ if [ -d /Library/Frameworks/Mapnik.framework ]; then
   export PYTHONPATH=/Library/Frameworks/Mapnik.framework/Python:$PYTHONPATH
 fi
 
+# PerlGem tools
+if [ -d /Users/zroger/treehouse/elc/perlgem/tools/bin ]; then
+  export PATH=/Users/zroger/treehouse/elc/perlgem/tools/bin:$PATH
+fi
