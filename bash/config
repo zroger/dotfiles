@@ -64,6 +64,11 @@ bash_prompt() {
 # Set $RET for use in $PS1.
 PROMPT_COMMAND='RET=$?'
 
+# Append to history after every command, to ensure history file contains
+# commands from all tabs.  Use history -n from any session to reload history
+# file into memory.
+PROMPT_COMMAND="${PROMPT_COMMAND}; history -a"
+
 bash_prompt
 unset bash_prompt
 
