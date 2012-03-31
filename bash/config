@@ -1,5 +1,5 @@
 # This loads RVM into a shell session.
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"  
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
 # Terminal coloring
 export CLICOLOR=1
@@ -22,7 +22,9 @@ shopt -s checkwinsize
 
 # Set up git prompt options.
 GIT_PS1_SHOWDIRTYSTATE=1
-GIT_PS1_SHOWUNTRACKEDFILES=1
+
+# This option takes a long time on large repos, so I'm not using it.
+# GIT_PS1_SHOWUNTRACKEDFILES=1
 
 # a functional but sane prompt
 bash_prompt() {
@@ -37,18 +39,31 @@ bash_prompt() {
         EMB="\[\e[1;34m\]" EMM="\[\e[1;35m\]" EMC="\[\e[1;36m\]" EMW="\[\e[1;37m\]"
 
   # username/host color for root/other
-  (( UID != 0 )) && local UC=$W || local UC=$R
+  (( $UID != 0 )) && local UC=$NONE || local UC=$R
 
-  RET_VALUE='$((( RET )) && printf ":\[\e[1;31m\]$RET\[\e[0m\]")'
-  GIT_INFO='$(__git_ps1 " on %s")'
+  # Script string for displaying the return value of the last command.  This
+  # depends on $RET being set from $PROMPT_COMMAND.
+  RET_VALUE='$((( RET )) && printf "{\[\e[1;31m\]$RET\[\e[0m\]} ")'
 
-  # space goes inside the printf so its not there when there's no git branch
-  PS1="${UC}\u${B}@\h${RET_VALUE} ${EMY}\w${EMM}${GIT_INFO}${EMW}${NONE} "
+  # git information from __git_ps1, provided by the git bash completion script.
+  GIT_INFO='$(__git_ps1 " [\[\e[1;35m\]%s\[\e[0m\]]")'
+
+  # [user@host:/cwd]
+  PS1="[${UC}\u${NONE}@\h:${C}\w${NONE}]"
+
+  # [git branch and info] (empty if not in a git tree)
+  PS1="${PS1}${GIT_INFO}${NONE}"
+
+  # Second line.  Time and return value.
+  PS1="${PS1}\n[${B}\t${NONE}] ${RET_VALUE}$ "
+
+  # PS4 - for "set -x" output
   PS4='+$BASH_SOURCE:$LINENO:$FUNCNAME: '
 }
 
-# show return val of last command
+# Set $RET for use in $PS1.
 PROMPT_COMMAND='RET=$?'
+
 bash_prompt
 unset bash_prompt
 
