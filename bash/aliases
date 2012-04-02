@@ -1,3 +1,5 @@
+# -*- mode: shell-script -*-
+
 alias reload='. ~/.bash_profile'
 
 # Do you like a colorful grep? I do!
@@ -6,11 +8,3 @@ alias grep="grep --color=auto"
 function volume {
   arch -i386 osascript -e "set volume output volume $1"
 }
-
-# A simple script which will name a tab in iTerm
-# usage:
-# $ nametab New tab name
-function nametab {
-  echo -ne "\033]0;"$@"\007"
-}
-

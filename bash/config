@@ -1,3 +1,5 @@
+# -*- mode: shell-script -*-
+
 # This loads RVM into a shell session.
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
@@ -19,56 +21,4 @@ export EDITOR=/usr/bin/vi
 
 # Handle resizes gracefully.
 shopt -s checkwinsize
-
-# Set up git prompt options.
-GIT_PS1_SHOWDIRTYSTATE=1
-
-# This option takes a long time on large repos, so I'm not using it.
-# GIT_PS1_SHOWUNTRACKEDFILES=1
-
-# a functional but sane prompt
-bash_prompt() {
-  local NONE="\[\e[0m\]"    # unsets color to term's fg color
-
-  # regular colors
-  local K="\[\e[0;30m\]" R="\[\e[0;31m\]" G="\[\e[0;32m\]" Y="\[\e[0;33m\]" \
-        B="\[\e[0;34m\]" M="\[\e[0;35m\]" C="\[\e[0;36m\]" W="\[\e[0;37m\]"
-
-  # emphasized (bolded) colors
-  local EMK="\[\e[1;30m\]" EMR="\[\e[1;31m\]" EMG="\[\e[1;32m\]" EMY="\[\e[1;33m\]" \
-        EMB="\[\e[1;34m\]" EMM="\[\e[1;35m\]" EMC="\[\e[1;36m\]" EMW="\[\e[1;37m\]"
-
-  # username/host color for root/other
-  (( $UID != 0 )) && local UC=$NONE || local UC=$R
-
-  # Script string for displaying the return value of the last command.  This
-  # depends on $RET being set from $PROMPT_COMMAND.
-  RET_VALUE='$((( RET )) && printf "{\[\e[1;31m\]$RET\[\e[0m\]} ")'
-
-  # git information from __git_ps1, provided by the git bash completion script.
-  GIT_INFO='$(__git_ps1 " [\[\e[1;35m\]%s\[\e[0m\]]")'
-
-  # [user@host:/cwd]
-  PS1="[${UC}\u${NONE}@\h:${C}\w${NONE}]"
-
-  # [git branch and info] (empty if not in a git tree)
-  PS1="${PS1}${GIT_INFO}${NONE}"
-
-  # Second line.  Time and return value.
-  PS1="${PS1}\n[${B}\t${NONE}] ${RET_VALUE}$ "
-
-  # PS4 - for "set -x" output
-  PS4='+$BASH_SOURCE:$LINENO:$FUNCNAME: '
-}
-
-# Set $RET for use in $PS1.
-PROMPT_COMMAND='RET=$?'
-
-# Append to history after every command, to ensure history file contains
-# commands from all tabs.  Use history -n from any session to reload history
-# file into memory.
-PROMPT_COMMAND="${PROMPT_COMMAND}; history -a"
-
-bash_prompt
-unset bash_prompt
 
