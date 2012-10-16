@@ -4,3 +4,5 @@ if [ -f `brew --prefix`/etc/bash_completion ]; then
 fi
 
 #source ~/.bash/completion_scripts/drush
+source ~/.bash/completion_scripts/vagrant
+source ~/.bash/completion_scripts/rake
