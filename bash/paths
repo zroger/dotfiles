@@ -15,7 +15,7 @@ if [ "$(which brew)" != "" ]; then
   export PATH=`brew --prefix`/bin:`brew --prefix`/sbin:$PATH
 
   # node.js lib path for brew
-  export NODE_PATH=`brew --prefix`/lib/node
+  export NODE_PATH=`brew --prefix`/lib/node_modules
 fi
 
 # Settings for Mapnik.framework Installer to enable Mapnik programs and python 
