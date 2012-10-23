@@ -46,7 +46,7 @@ function nametab {
 GIT_PS1_SHOWDIRTYSTATE=1
 
 # This option takes a long time on large repos, so I'm not using it.
-#GIT_PS1_SHOWUNTRACKEDFILES=1
+GIT_PS1_SHOWUNTRACKEDFILES=1
 
 # a functional but sane prompt
 bash_prompt() {
@@ -67,8 +67,14 @@ bash_prompt() {
   # depends on $RET being set from $PROMPT_COMMAND.
   RET_VALUE='$((( RET )) && printf "{\[\e[1;31m\]$RET\[\e[0m\]} ")'
 
-  # git information from __git_ps1, provided by the git bash completion script.
-  GIT_INFO='$(__git_ps1 " [\[\e[1;35m\]%s\[\e[0m\]]")'
+  # git information from vcprompt or __git_ps1, provided by the git bash completion script.
+  GIT_INFO=" $EMM\$(vcprompt)$NONE"
+  $(command -v vcprompt > /dev/null 2>&1) || {
+    GIT_INFO="\$(__git_ps1 \" [$EMM%s$NONE]\")"
+    $(command -v __git_ps1 > /dev/null 2>&1) || {
+      GIT_INFO=''
+    }
+  }
 
   # [user@host:/cwd]
   # PS1="[${UC}\u${NONE}@\h:${C}\w${NONE}]"
