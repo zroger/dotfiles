@@ -6,3 +6,5 @@ if [ "$(which brew 2>/dev/null)" != "" ]; then
 fi
 
 #source ~/.bash/completion_scripts/drush
+source ~/.bash/completion_scripts/vagrant
+source ~/.bash/completion_scripts/rake
