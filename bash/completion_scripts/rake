@@ -2,7 +2,7 @@
 #
 # some code from on Jonathan Palardy's http://technotales.wordpress.com/2009/09/18/rake-completion-cache/
 # and http://pastie.org/217324 found http://ragonrails.com/post/38905212/rake-bash-completion-ftw
-# 
+#
 # For details and discussion
 # http://turadg.aleahmad.net/2011/02/bash-completion-for-rake-tasks/
 #
@@ -10,7 +10,7 @@
 #
 # Place in your bash completions.d and/or source in your .bash_profile
 # If on a Mac with Homebrew, try "brew install bash-completion"
-# 
+#
 # USAGE
 #
 # Type 'rake' and hit tab twice to get completions.
@@ -40,7 +40,7 @@ export COMP_WORDBREAKS=${COMP_WORDBREAKS/\:/}
 function _rakecomplete() {
   # error if no Rakefile
   if [ ! -e Rakefile ]; then
-    echo "missing Rakefile"
+    # echo "missing Rakefile"
     return 1
   fi
 
