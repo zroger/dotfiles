@@ -18,7 +18,7 @@ if [ "$(which brew 2>/dev/null)" != "" ]; then
   export NODE_PATH=`brew --prefix`/lib/node_modules
 fi
 
-# Settings for Mapnik.framework Installer to enable Mapnik programs and python 
+# Settings for Mapnik.framework Installer to enable Mapnik programs and python
 if [ -d /Library/Frameworks/Mapnik.framework ]; then
   export PATH=/Library/Frameworks/Mapnik.framework/Programs:$PATH
   export PYTHONPATH=/Library/Frameworks/Mapnik.framework/Python:$PYTHONPATH
@@ -28,3 +28,5 @@ fi
 if [ -d /Users/zroger/treehouse/elc/perlgem/tools/bin ]; then
   export PATH=/Users/zroger/treehouse/elc/perlgem/tools/bin:$PATH
 fi
+
+export PYTHONPATH="$(brew --prefix)/lib/python2.7/site-packages:$PYTHONPATH"
