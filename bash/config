@@ -1,7 +1,7 @@
 # -*- mode: shell-script -*-
 
 # This loads RVM into a shell session.
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+# [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
 # Terminal coloring
 export CLICOLOR=1
@@ -9,7 +9,11 @@ export CLICOLOR=1
 # Colorized Prompt
 PS1='\[\e[1;32m\][\u@\h \W]\$\[\e[0m\] '
 
-export EDITOR=/usr/bin/vi
+if [[ `which subl` ]]; then
+  export EDITOR='subl -w'
+else
+  export EDITOR=/usr/bin/vi
+fi
 
 #
 # borrowed from smerrill
@@ -21,4 +25,6 @@ export EDITOR=/usr/bin/vi
 
 # Handle resizes gracefully.
 shopt -s checkwinsize
+
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
