@@ -30,3 +30,6 @@ if [ -d /Users/zroger/treehouse/elc/perlgem/tools/bin ]; then
 fi
 
 export PYTHONPATH="$(brew --prefix)/lib/python2.7/site-packages:$PYTHONPATH"
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
