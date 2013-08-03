@@ -8,3 +8,5 @@ alias grep="grep --color=auto"
 function volume {
   arch -i386 osascript -e "set volume output volume $1"
 }
+
+alias xmlcat="tidy -i -xml"
