@@ -1,3 +1,13 @@
 [submodule "vim/bundle/command-t"]
 	path = vim/bundle/command-t
-	url = git://git.wincent.com/command-t.git
+	url = https://github.com/wincent/Command-T.git
+[submodule "vim/bundle/vim-colors-solarized"]
+	path = vim/bundle/vim-colors-solarized
+	url = https://github.com/altercation/vim-colors-solarized.git
+[submodule "vim/bundle/nerdtree"]
+	path = vim/bundle/nerdtree
+	url = https://github.com/scrooloose/nerdtree.git
+[submodule "vim/bundle/vim-nerdtree-tabs"]
+	path = vim/bundle/vim-nerdtree-tabs
+	url = https://github.com/jistr/vim-nerdtree-tabs.git
+

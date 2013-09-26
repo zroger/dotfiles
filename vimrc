@@ -1,13 +1,26 @@
 set nocompatible
-syntax enable
 set encoding=utf-8
 set showcmd                     " display incomplete commands
+set number
+set ruler
+
+" Keep swp files under ~/.vim/swap
+set directory=~/.vim/swap,~/tmp,.
 
 "" Whitespace
 set nowrap                      " don't wrap lines
-set tabstop=2 shiftwidth=2      " a tab is two spaces
+set tabstop=4 shiftwidth=4      " a tab is two spaces
 set expandtab                   " use spaces, not tabs
 set backspace=indent,eol,start  " backspace through everything in insert mode
+
+" Give some context while scrolling.
+set scrolloff=3
+
+"" Visible whitespace
+set list
+" Use the same symbols as TextMate for tabstops
+" and a handy dot for trailing spaces.
+set listchars=tab:▸\ ,eol:¬,trail:·,extends:›,precedes:‹
 
 "" Searching
 set hlsearch                    " highlight matches
@@ -27,4 +40,48 @@ cnoremap %% <C-R>=expand('%:h').'/'<cr>
 
 map <leader>f :CommandTFlush<cr>\|:CommandT<cr>
 map <leader>F :CommandTFlush<cr>\|:CommandT %%<cr>
+
+map <F2> :NERDTreeToggle<cr>
+
+" Show hidden files in NerdTree
+let NERDTreeShowHidden=1
+
+" autoopen NERDTree and focus cursor in new document
+" autocmd VimEnter * NERDTree
+autocmd VimEnter * NERDTreeTabsOpen
+autocmd VimEnter * wincmd p
+
+" Solarized color scheme
+syntax enable
+set background=dark
+colorscheme solarized
+
+" sudo save with :w!!
+cmap w!! w !sudo tee % >/dev/null
+
+" navigate more naturally through wrapped lines.
+nnoremap j gj
+nnoremap k gk
+
+" Easy window navigation
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
+" Tab navigation with brackets
+" map <C-[> :tabprev<cr>:wincmd p<cr>
+" map <C-]> :tabnext<cr>:wincmd p<cr>
+
+" NerdTree {
+    map <C-e> :NERDTreeToggle<CR>:NERDTreeMirror<CR>
+
+    let NERDTreeShowBookmarks=1
+    let NERDTreeShowHidden=1
+    let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
+    " Keep NERDTree open after selecting a file
+    let NERDTreeQuitOnOpen=0
+
+    let g:nerdtree_tabs_open_on_console_startup=1
+" }
 
