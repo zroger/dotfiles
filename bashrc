@@ -5,12 +5,7 @@ source ~/.bash/prompt
 
 ### Basic config ###
 export CLICOLOR=1
-export EDITOR=/usr/bin/vi
-
-# Use Sublime text if `subl` helper is installed.
-if which subl > /dev/null; then
-  export EDITOR='subl -n -w'
-fi
+export EDITOR=$(which vim 2>/dev/null)
 
 ### Homebrew stuff ###
 HOMEBREW="$(which brew 2>/dev/null)"
