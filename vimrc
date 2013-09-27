@@ -41,9 +41,6 @@ Helptags
 " to directory of current file - http://vimcasts.org/e/14
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 
-map <leader>f :CommandTFlush<cr>\|:CommandT<cr>
-map <leader>F :CommandTFlush<cr>\|:CommandT %%<cr>
-
 " autoopen NERDTree and focus cursor in new document
 " autocmd VimEnter * NERDTree
 autocmd VimEnter * NERDTreeTabsOpen
