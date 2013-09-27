@@ -34,6 +34,9 @@ call pathogen#infect()
 " use comma as <Leader> key instead of backslash
 let mapleader=","
 
+" Needed to load pathogen help files
+Helptags
+
 " double percentage sign in command mode is expanded
 " to directory of current file - http://vimcasts.org/e/14
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
