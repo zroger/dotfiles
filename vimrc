@@ -80,3 +80,18 @@ map <C-l> <C-w>l
     let g:nerdtree_tabs_open_on_console_startup=1
 " }
 
+
+" Highlight trailing whitespace like an error.
+match ErrorMsg '\s\+$'
+
+
+" Removes trailing spaces
+function! TrimWhiteSpace()
+    %s/\s\+$//e
+endfunction
+
+autocmd FileType python,php autocmd FileWritePre    * :call TrimWhiteSpace()
+autocmd FileType python,php autocmd FileAppendPre   * :call TrimWhiteSpace()
+autocmd FileType python,php autocmd FilterWritePre  * :call TrimWhiteSpace()
+autocmd FileType python,php autocmd BufWritePre     * :call TrimWhiteSpace()
+
