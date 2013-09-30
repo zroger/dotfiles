@@ -1,19 +1,16 @@
-[user]
-  name = <%= print("Your Name: "); STDOUT.flush; STDIN.gets.chomp %>
-  email = <%= print("Your Email: "); STDOUT.flush; STDIN.gets.chomp %>
-
 [color]
   diff = auto
   status = auto
   branch = auto
   ui = auto
+
 [core]
-  excludesfile = /Users/rogerlopez/.gitignore
+  excludesfile = ~/.gitignore
   autocrlf = input
+
 [apply]
   whitespace = nowarn
-[format]
-  pretty = %C(yellow)%h%Creset %s %C(red)(%an, %cr)%Creset
+
 [alias]
   st = status
   ci = commit
@@ -27,8 +24,14 @@
   tool = diffmerge
 [difftool "diffmerge"]
   cmd = diffmerge.sh \"$LOCAL\" \"$REMOTE\"
+
 [merge]
   tool = diffmerge
 [mergetool "diffmerge"]
   cmd = diffmerge.sh --result="$MERGED" "$LOCAL" "$(if test -f "$BASE"; then echo "$BASE"; else echo "$LOCAL"; fi)" "$REMOTE" --title1="Mine" --title2="Merged" --title3="Theirs"
 
+[push]
+  default = current
+
+[include]
+  path = .gitconfig.local
