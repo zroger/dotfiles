@@ -29,7 +29,7 @@ set ignorecase                  " searches are case insensitive...
 set smartcase                   " ... unless they contain at least one capital letter
 
 "" Pathogen
-call pathogen#infect() 
+call pathogen#infect()
 
 " use comma as <Leader> key instead of backslash
 let mapleader=","
@@ -94,4 +94,7 @@ autocmd FileType python,php autocmd FileWritePre    * :call TrimWhiteSpace()
 autocmd FileType python,php autocmd FileAppendPre   * :call TrimWhiteSpace()
 autocmd FileType python,php autocmd FilterWritePre  * :call TrimWhiteSpace()
 autocmd FileType python,php autocmd BufWritePre     * :call TrimWhiteSpace()
+
+map <C-]> :tabnext<CR>
+map <C-[> :tabprev<CR>
 
