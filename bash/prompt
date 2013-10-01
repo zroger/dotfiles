@@ -42,6 +42,14 @@ function nametab {
   echo -ne "\033]0;${title}\007"
 }
 
+# draw a horizontal rule.
+function hr {
+  # at least one command must be run in the shell before $COLUMNS is available.
+  touch ~
+  s=$(printf "%*s" $COLUMNS);
+  echo "${s// /.}"
+}
+
 # Set up git prompt options.
 GIT_PS1_SHOWDIRTYSTATE=1
 
@@ -78,7 +86,7 @@ bash_prompt() {
 
   # [user@host:/cwd]
   # PS1="[${UC}\u${NONE}@\h:${C}\w${NONE}]"
-  PS1="[${UC}\u${NONE}@\h:${C}\$(shorten_pwd 32)${NONE}]"
+  PS1="$(hr)\n[${UC}\u${NONE}@${B}\h${NONE}:${C}\$(shorten_pwd 33)${NONE}]"
 
   # [git branch and info] (empty if not in a git tree)
   PS1="${PS1}${GIT_INFO}${NONE}"
