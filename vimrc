@@ -69,7 +69,7 @@ map <C-l> <C-w>l
 " map <C-]> :tabnext<cr>:wincmd p<cr>
 
 " NerdTree {
-    map <C-e> :NERDTreeToggle<CR>:NERDTreeMirror<CR>
+    map <F2> :NERDTreeToggle<CR>:NERDTreeMirror<CR>
 
     let NERDTreeShowBookmarks=1
     let NERDTreeShowHidden=1
@@ -94,7 +94,4 @@ autocmd FileType python,php autocmd FileWritePre    * :call TrimWhiteSpace()
 autocmd FileType python,php autocmd FileAppendPre   * :call TrimWhiteSpace()
 autocmd FileType python,php autocmd FilterWritePre  * :call TrimWhiteSpace()
 autocmd FileType python,php autocmd BufWritePre     * :call TrimWhiteSpace()
-
-map <C-]> :tabnext<CR>
-map <C-[> :tabprev<CR>
 
