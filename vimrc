@@ -1,4 +1,23 @@
 set nocompatible
+filetype off                    " required for vundle
+
+" Set up vundle
+set rtp+=~/.vim/bundle/vundle
+call vundle#rc()
+
+" Let Vundle manage Vundle
+Bundle 'gmarik/vundle'
+
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'scrooloose/nerdtree'
+Bundle 'jistr/vim-nerdtree-tabs'
+Bundle 'kien/ctrlp.vim'
+Bundle 'airblade/vim-gitgutter'
+Bundle 'majutsushi/tagbar'
+Bundle 'christoomey/vim-tmux-navigator'
+
+filetype on                     " enable filetype after bundle imports
+
 set encoding=utf-8
 set showcmd                     " display incomplete commands
 set number
@@ -29,13 +48,13 @@ set ignorecase                  " searches are case insensitive...
 set smartcase                   " ... unless they contain at least one capital letter
 
 "" Pathogen
-call pathogen#infect()
+"call pathogen#infect()
 
 " use comma as <Leader> key instead of backslash
 let mapleader=","
 
 " Needed to load pathogen help files
-Helptags
+"Helptags
 
 " double percentage sign in command mode is expanded
 " to directory of current file - http://vimcasts.org/e/14
