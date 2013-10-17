@@ -15,8 +15,9 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'majutsushi/tagbar'
 Bundle 'christoomey/vim-tmux-navigator'
+Bundle 'klen/python-mode'
 
-filetype on                     " enable filetype after bundle imports
+filetype plugin indent on       " enable filetype after bundle imports
 
 set encoding=utf-8
 set showcmd                     " display incomplete commands
@@ -47,18 +48,8 @@ set incsearch                   " incremental searching
 set ignorecase                  " searches are case insensitive...
 set smartcase                   " ... unless they contain at least one capital letter
 
-"" Pathogen
-"call pathogen#infect()
-
 " use comma as <Leader> key instead of backslash
 let mapleader=","
-
-" Needed to load pathogen help files
-"Helptags
-
-" double percentage sign in command mode is expanded
-" to directory of current file - http://vimcasts.org/e/14
-cnoremap %% <C-R>=expand('%:h').'/'<cr>
 
 " autoopen NERDTree and focus cursor in new document
 " autocmd VimEnter * NERDTree
@@ -69,6 +60,9 @@ autocmd VimEnter * wincmd p
 syntax enable
 set background=dark
 colorscheme solarized
+
+" Safe-guard against accidentally stumbling into Ex mode.
+nnoremap Q <nop>
 
 " sudo save with :w!!
 cmap w!! w !sudo tee % >/dev/null
@@ -82,10 +76,6 @@ map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
-
-" Tab navigation with brackets
-" map <C-[> :tabprev<cr>:wincmd p<cr>
-" map <C-]> :tabnext<cr>:wincmd p<cr>
 
 " NerdTree {
     map <F2> :NERDTreeToggle<CR>:NERDTreeMirror<CR>
@@ -103,7 +93,6 @@ map <C-l> <C-w>l
 " Highlight trailing whitespace like an error.
 match ErrorMsg '\s\+$'
 
-
 " Removes trailing spaces
 function! TrimWhiteSpace()
     %s/\s\+$//e
@@ -113,4 +102,46 @@ autocmd FileType python,php autocmd FileWritePre    * :call TrimWhiteSpace()
 autocmd FileType python,php autocmd FileAppendPre   * :call TrimWhiteSpace()
 autocmd FileType python,php autocmd FilterWritePre  * :call TrimWhiteSpace()
 autocmd FileType python,php autocmd BufWritePre     * :call TrimWhiteSpace()
+
+
+" Python-mode
+" Activate rope
+" Keys:
+" K             Show python docs
+" <Ctrl-Space>  Rope autocomplete
+" <Ctrl-c>g     Rope goto definition
+" <Ctrl-c>d     Rope show documentation
+" <Ctrl-c>f     Rope find occurrences
+" <Leader>b     Set, unset breakpoint (g:pymode_breakpoint enabled)
+" [[            Jump on previous class or function (normal, visual, operator modes)
+" ]]            Jump on next class or function (normal, visual, operator modes)
+" [M            Jump on previous class or method (normal, visual, operator modes)
+" ]M            Jump on next class or method (normal, visual, operator modes)
+let g:pymode_rope = 1
+
+" Documentation
+let g:pymode_doc = 1
+let g:pymode_doc_key = 'K'
+
+"Linting
+let g:pymode_lint = 1
+let g:pymode_lint_checker = "pyflakes,pep8"
+" Auto check on save
+let g:pymode_lint_write = 1
+
+" Support virtualenv
+let g:pymode_virtualenv = 1
+
+" Enable breakpoints plugin
+let g:pymode_breakpoint = 1
+let g:pymode_breakpoint_key = '<leader>b'
+
+" syntax highlighting
+let g:pymode_syntax = 1
+let g:pymode_syntax_all = 1
+let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+let g:pymode_syntax_space_errors = g:pymode_syntax_all
+
+" Don't autofold code
+let g:pymode_folding = 0
 
