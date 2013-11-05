@@ -18,3 +18,9 @@ vundle_path="$HOME/.vim/bundle/vundle"
 [[ -d $vundle_path ]] || git clone https://github.com/gmarik/vundle.git $vundle_path
 vim +BundleInstall +qall
 
+
+# Install virtualenvwrapper into local pip directory
+if [ ! -f "$HOME/.local/bin/virtualenvwrapper.sh" ]; then
+    pip install --install-option="--user" virtualenvwrapper
+fi
+

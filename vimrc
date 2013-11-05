@@ -16,6 +16,7 @@ Bundle 'airblade/vim-gitgutter'
 Bundle 'majutsushi/tagbar'
 Bundle 'christoomey/vim-tmux-navigator'
 Bundle 'klen/python-mode'
+Bundle 'Lokaltog/powerline'
 
 filetype plugin indent on       " enable filetype after bundle imports
 

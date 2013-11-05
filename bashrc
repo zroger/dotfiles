@@ -1,7 +1,6 @@
 # -*- mode: shell-script -*-
 
 source ~/.bash/aliases
-source ~/.bash/prompt
 
 ### Basic config ###
 export CLICOLOR=1
@@ -25,12 +24,36 @@ if [ -n "$HOMEBREW" ] ; then
         export RBENV_ROOT=/usr/local/var/rbenv
         eval "$(rbenv init -)";
     fi
+
+    if [ -f `brew --prefix autoenv`/activate.sh ]; then
+        . `brew --prefix autoenv`/activate.sh
+    fi
 fi
 
 ### python ###
 export PIP_RESPECT_VIRTUALENV=true
-export PIP_REQUIRE_VIRTUALENV=true
+# export PIP_REQUIRE_VIRTUALENV=true
 export PYTHONDONTWRITEBYTECODE=true
+
+if [ -f ~/.local/bin/virtualenvwrapper.sh ]; then
+    mkdir -p ~/Envs
+    export WORKON_HOME=~/Envs
+    source ~/.local/bin/virtualenvwrapper.sh
+
+    (workon | grep -e '^default$' > /dev/null) || mkvirtualenv default
+    workon default
+
+else
+    echo "### virtualenvwrapper not found ###"
+fi
+
+# Use bash powerline prompt if available; fallback to old prompt otherwise
+BASH_POWERLINE=$VIRTUAL_ENV/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh
+if [ -f $BASH_POWERLINE ]; then
+    source $BASH_POWERLINE
+else
+    source ~/.bash/prompt
+fi
 
 # use .localrc for settings specific to one system
 if [ -f ~/.localrc ]; then
