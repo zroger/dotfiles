@@ -34,6 +34,7 @@ fi
 export PIP_RESPECT_VIRTUALENV=true
 # export PIP_REQUIRE_VIRTUALENV=true
 export PYTHONDONTWRITEBYTECODE=true
+export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 if [ -f ~/.local/bin/virtualenvwrapper.sh ]; then
     mkdir -p ~/Envs
@@ -48,12 +49,30 @@ else
 fi
 
 # Use bash powerline prompt if available; fallback to old prompt otherwise
+POWERLINE_COMMAND=$VIRTUAL_ENV/bin/powerline
 BASH_POWERLINE=$VIRTUAL_ENV/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh
 if [ -f $BASH_POWERLINE ]; then
     source $BASH_POWERLINE
+
+    # Override _powerline_prompt to invoke powerline twice for a 2 line prompt.
+    _powerline_prompt() {
+        local last_exit_code=$?
+        [[ -z "$POWERLINE_OLD_PROMPT_COMMAND" ]] ||
+                eval $POWERLINE_OLD_PROMPT_COMMAND
+
+        PS1="\n"
+        PS1="$PS1$($POWERLINE_COMMAND shell left -r bash_prompt --last_exit_code=$last_exit_code)"
+        PS1="$PS1\n"
+        PS1="$PS1$($POWERLINE_COMMAND shell2 left -r bash_prompt --last_exit_code=$last_exit_code)"
+        _powerline_tmux_set_pwd
+        return $last_exit_code
+}
+
 else
     source ~/.bash/prompt
 fi
+
+
 
 # use .localrc for settings specific to one system
 if [ -f ~/.localrc ]; then

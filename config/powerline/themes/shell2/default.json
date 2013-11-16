@@ -1,6 +1,9 @@
 {
 	"default_module": "powerline.segments.common",
 	"segment_data": {
+        "user": {
+            "before": "👤 "
+        },
 		"hostname": {
 			"before": " ",
 			"args": {
@@ -15,37 +18,24 @@
 		}
 	},
 	"segments": {
+		"right": [
+		],
 		"left": [
 			{
-				"name": "hostname"
+				"module": "powerline.segments.shell",
+				"name": "last_status"
 			},
-			{
-				"name": "user"
-			},
-			{
-				"name": "virtualenv"
-			},
-			{
-				"name": "cwd",
-				"args": {
-					"dir_limit_depth": 3
-				}
-			},
-            {
-                "name": "branch",
-                "args": {
-                    "status_colors": true
-                }
-            }
-		],
-		"right": [
 			{
 				"module": "powerline.segments.shell",
 				"name": "last_pipe_status"
 			},
 			{
-				"name": "branch"
+				"name": "date",
+                "args": {
+                    "format": "%I:%M:%S %p"
+                }
 			}
 		]
 	}
 }
+
