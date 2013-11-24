@@ -21,6 +21,7 @@ vim +BundleInstall +qall
 
 # Install virtualenvwrapper into local pip directory
 if [ ! -f "$HOME/.local/bin/virtualenvwrapper.sh" ]; then
+    export PYTHONDONTWRITEBYTECODE=0
     pip install --install-option="--user" virtualenvwrapper
 fi
 

@@ -30,6 +30,15 @@ if [ -n "$HOMEBREW" ] ; then
     fi
 fi
 
+if [[ -f /etc/bash_completion ]]; then
+    . /etc/bash_completion
+fi
+
+# `pip install --user` installs to ~/.local
+if [[ -d ~/.local/bin ]]; then
+    export PATH=$PATH:~/.local/bin
+fi
+
 ### python ###
 export PIP_RESPECT_VIRTUALENV=true
 # export PIP_REQUIRE_VIRTUALENV=true
