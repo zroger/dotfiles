@@ -92,6 +92,13 @@ map <C-l> <C-w>l
     let g:nerdtree_tabs_open_on_console_startup=1
 " }
 
+" ctrlp {
+let g:ctrlp_prompt_mappings = {
+    \ 'AcceptSelection("e")': ['<c-t>'],
+    \ 'AcceptSelection("t")': ['<cr>'],
+    \ }
+" }
+
 
 " Highlight trailing whitespace like an error.
 match ErrorMsg '\s\+$'
