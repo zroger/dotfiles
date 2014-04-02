@@ -10,6 +10,7 @@ Bundle 'gmarik/vundle'
 
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'scrooloose/nerdtree'
+Bundle 'scrooloose/nerdcommenter'
 Bundle 'jistr/vim-nerdtree-tabs'
 Bundle 'kien/ctrlp.vim'
 Bundle 'airblade/vim-gitgutter'
@@ -17,6 +18,7 @@ Bundle 'majutsushi/tagbar'
 Bundle 'christoomey/vim-tmux-navigator'
 Bundle 'klen/python-mode'
 Bundle 'Lokaltog/powerline'
+Bundle 'chase/vim-ansible-yaml'
 
 filetype plugin indent on       " enable filetype after bundle imports
 
@@ -127,8 +129,10 @@ let g:pymode_doc_key = 'K'
 "Linting
 let g:pymode_lint = 1
 let g:pymode_lint_checker = "pyflakes,pep8"
+let g:pymode_lint_checker = "pylint"
 " Auto check on save
 let g:pymode_lint_write = 1
+let g:pymode_lint_config = "etc/pylintrc"
 
 " Support virtualenv
 let g:pymode_virtualenv = 1
@@ -145,4 +149,17 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 
 " Don't autofold code
 let g:pymode_folding = 0
+
+" Ansible specific yaml 
+" https://gist.github.com/zealot128/6842500
+augroup ansible_yaml
+  autocmd!
+  au BufRead playbook.yml,roles/*yml,ansible*yml call SetAnsibleOpts()
+augroup END
+ 
+function SetAnsibleOpts()
+   syntax match yamlInterpolate '$\w\+\|{{[^}]\+}}'
+   syntax match yamlInterpolate '$\w\+\|{{[^}]\+}}' contained containedin=yamlString
+   syntax match yamlConstant '\(with_items\|when\|name\|notify\|ignore_errors\|changed_when\|register\|with_password\):'
+endfunction  
 
