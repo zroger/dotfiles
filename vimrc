@@ -1,172 +1,125 @@
-set nocompatible
-filetype off                    " required for vundle
+call plug#begin()
+Plug 'tpope/vim-sensible'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'FelikZ/ctrlp-py-matcher'
+Plug 'kien/ctrlp.vim'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-rhubarb'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-vinegar'
+Plug 'bling/vim-airline'
+Plug 'scrooloose/syntastic'
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 
-" Set up vundle
-set rtp+=~/.vim/bundle/vundle
-call vundle#rc()
+" Syntax
+Plug 'juvenn/mustache.vim'
+Plug 'kchmck/vim-coffee-script'
+Plug 'nono/vim-handlebars'
+Plug 'mitsuhiko/vim-jinja'
+Plug 'hdima/python-syntax'
 
-" Let Vundle manage Vundle
-Bundle 'gmarik/vundle'
+" Color schemes
+Plug 'altercation/vim-colors-solarized'
+Plug 'morhetz/gruvbox'
 
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'scrooloose/nerdtree'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'jistr/vim-nerdtree-tabs'
-Bundle 'kien/ctrlp.vim'
-Bundle 'airblade/vim-gitgutter'
-Bundle 'majutsushi/tagbar'
-Bundle 'christoomey/vim-tmux-navigator'
-Bundle 'klen/python-mode'
-Bundle 'Lokaltog/powerline'
-Bundle 'chase/vim-ansible-yaml'
+call plug#end()
 
-filetype plugin indent on       " enable filetype after bundle imports
-
-set encoding=utf-8
-set showcmd                     " display incomplete commands
+" basic settings
 set number
 set ruler
+set exrc        " enable per-directory .vimrc files
+set secure      " disable unsafe commands in local .vimrc files
 
-" Keep swp files under ~/.vim/swap
-set directory=~/.vim/swap,~/tmp,.
+" General FileType settings ------------------ {{{
+augroup FTOptions
+    autocmd!
+    autocmd FileType netrw nnoremap q :bp\|bd #<CR>
+    autocmd FileType * if exists("+omnifunc") && &omnifunc == "" 
+	\ | setlocal omnifunc=syntaxcomplete#Complete | endif
+    autocmd FileType * if exists("+completefunc") && &completefunc == ""
+	\ | setlocal completefunc=syntaxcomplete#Complete | endif
+augroup END
+" }}}
 
-"" Whitespace
-set nowrap                      " don't wrap lines
-set tabstop=4 shiftwidth=4      " a tab is two spaces
-set expandtab                   " use spaces, not tabs
-set backspace=indent,eol,start  " backspace through everything in insert mode
+" Vimscript file settings -------------------- {{{
+augroup filetype_vim
+    autocmd!
+    autocmd FileType vim setlocal foldmethod=marker
+augroup END
+" }}}
 
-" Give some context while scrolling.
-set scrolloff=3
-
-"" Visible whitespace
-set list
-" Use the same symbols as TextMate for tabstops
-" and a handy dot for trailing spaces.
-set listchars=tab:▸\ ,eol:¬,trail:·,extends:›,precedes:‹
-
-"" Searching
-set hlsearch                    " highlight matches
-set incsearch                   " incremental searching
-set ignorecase                  " searches are case insensitive...
-set smartcase                   " ... unless they contain at least one capital letter
-
-" use comma as <Leader> key instead of backslash
-let mapleader=","
-
-" autoopen NERDTree and focus cursor in new document
-" autocmd VimEnter * NERDTree
-autocmd VimEnter * NERDTreeTabsOpen
-autocmd VimEnter * wincmd p
-
-" Solarized color scheme
-syntax enable
-set background=dark
-colorscheme solarized
-
-" Safe-guard against accidentally stumbling into Ex mode.
-nnoremap Q <nop>
-
-" sudo save with :w!!
-cmap w!! w !sudo tee % >/dev/null
-
-" navigate more naturally through wrapped lines.
-nnoremap j gj
-nnoremap k gk
-
-" Easy window navigation
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
-
-" NerdTree {
-    map <F2> :NERDTreeToggle<CR>:NERDTreeMirror<CR>
-
-    let NERDTreeShowBookmarks=1
-    let NERDTreeShowHidden=1
-    let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
-    " Keep NERDTree open after selecting a file
-    let NERDTreeQuitOnOpen=0
-
-    let g:nerdtree_tabs_open_on_console_startup=1
-" }
-
-" ctrlp {
+" ctrlp -------------------------------------- {{{
+" Swap enter and ctrl+t in ctrlp window.
+" Enter will open in a new tab, ctrl+t will open in same window.
 let g:ctrlp_prompt_mappings = {
     \ 'AcceptSelection("e")': ['<c-t>'],
     \ 'AcceptSelection("t")': ['<cr>'],
     \ }
-" }
+
+let g:ctrlp_custom_ignore = {
+    \ 'dir': '\v[\/](doc\/build|bower_components)\/.*',
+    \ 'file': '\v\.(pyc)$',
+    \ }
+
+let g:ctrlp_user_command = [
+    \ '.git/',
+    \ 'git ls-files --cached --exclude-standard --others %s'
+    \ ]
+
+let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+" }}}
+
+" airline {{{
+"let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1 
+" }}}
+
+" syntastic ---------------------------------- {{{
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 0
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_loc_list_height = 10
+let g:syntastic_mode_map = {
+        \ "mode": "passive",
+        \ "active_filetypes": [],
+        \ "passive_filetypes": [] }
+
+" }}}
 
 
-" Highlight trailing whitespace like an error.
-match ErrorMsg '\s\+$'
+" nerdtree ---------------------------------- {{{
+let NERDTreeMinimalUI=1
+let NERDTreeQuitOnOpen=1
+let NERDTreeRespectWildIgnore=1
+let NERDTreeIgnore=['__pycache__', '\.pyc$', '\~$']
 
-" Removes trailing spaces
-function! TrimWhiteSpace()
-    %s/\s\+$//e
+map - :call NERDTreeToggleInCurDir()<CR>
+function! NERDTreeToggleInCurDir()
+  " If NERDTree is open in the current buffer
+  if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
+    exe ":NERDTreeClose"
+  else
+    exe ":NERDTreeFind"
+  endif
 endfunction
+" }}}
 
-autocmd FileType python,php autocmd FileWritePre    * :call TrimWhiteSpace()
-autocmd FileType python,php autocmd FileAppendPre   * :call TrimWhiteSpace()
-autocmd FileType python,php autocmd FilterWritePre  * :call TrimWhiteSpace()
-autocmd FileType python,php autocmd BufWritePre     * :call TrimWhiteSpace()
+" gui settings
+if (&t_Co == 256 || has('gui_running'))
+  if ($TERM_PROGRAM == 'iTerm.app')
+    colorscheme solarized
+  else
+    colorscheme desert
+  endif
+endif
 
-
-" Python-mode
-" Activate rope
-" Keys:
-" K             Show python docs
-" <Ctrl-Space>  Rope autocomplete
-" <Ctrl-c>g     Rope goto definition
-" <Ctrl-c>d     Rope show documentation
-" <Ctrl-c>f     Rope find occurrences
-" <Leader>b     Set, unset breakpoint (g:pymode_breakpoint enabled)
-" [[            Jump on previous class or function (normal, visual, operator modes)
-" ]]            Jump on next class or function (normal, visual, operator modes)
-" [M            Jump on previous class or method (normal, visual, operator modes)
-" ]M            Jump on next class or method (normal, visual, operator modes)
-let g:pymode_rope = 1
-
-" Documentation
-let g:pymode_doc = 1
-let g:pymode_doc_key = 'K'
-
-"Linting
-let g:pymode_lint = 1
-let g:pymode_lint_checker = "pyflakes,pep8"
-let g:pymode_lint_checker = "pylint"
-" Auto check on save
-let g:pymode_lint_write = 1
-let g:pymode_lint_config = "etc/pylintrc"
-
-" Support virtualenv
-let g:pymode_virtualenv = 1
-
-" Enable breakpoints plugin
-let g:pymode_breakpoint = 1
-let g:pymode_breakpoint_key = '<leader>b'
-
-" syntax highlighting
-let g:pymode_syntax = 1
-let g:pymode_syntax_all = 1
-let g:pymode_syntax_indent_errors = g:pymode_syntax_all
-let g:pymode_syntax_space_errors = g:pymode_syntax_all
-
-" Don't autofold code
-let g:pymode_folding = 0
-
-" Ansible specific yaml 
-" https://gist.github.com/zealot128/6842500
-augroup ansible_yaml
-  autocmd!
-  au BufRead playbook.yml,roles/*yml,ansible*yml call SetAnsibleOpts()
-augroup END
- 
-function SetAnsibleOpts()
-   syntax match yamlInterpolate '$\w\+\|{{[^}]\+}}'
-   syntax match yamlInterpolate '$\w\+\|{{[^}]\+}}' contained containedin=yamlString
-   syntax match yamlConstant '\(with_items\|when\|name\|notify\|ignore_errors\|changed_when\|register\|with_password\):'
-endfunction  
-
+" vim: set filetype=vim
