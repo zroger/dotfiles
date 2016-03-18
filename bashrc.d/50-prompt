@@ -1,0 +1,14 @@
+# Use bash powerline prompt if available; fallback to old prompt otherwise
+POWERLINE_COMMAND=$(which powerline)
+if [ -n "$POWERLINE_COMMAND" ]; then
+    POWERLINE_DIR=$(dirname $(dirname $(python -c "import powerline; print powerline.__file__")))
+
+    powerline-daemon -q
+    POWERLINE_BASH_CONTINUATION=1
+    POWERLINE_BASH_SELECT=1
+    . "$POWERLINE_DIR"/powerline/bindings/bash/powerline.sh
+else
+    source ~/.bash/prompt
+fi
+
+

@@ -1,0 +1,24 @@
+### Homebrew stuff ###
+HOMEBREW="$(which brew 2>/dev/null)"
+if [ -n "$HOMEBREW" ] ; then
+    # Make sure brew path comes first so its executables
+    # are found before defaults.  Specifically helpful for
+    # php and other things already provided by OSX.
+    export PATH=`brew --prefix`/bin:`brew --prefix`/sbin:$PATH
+
+    ### bash-completion ###
+    if [ -f `brew --prefix`/etc/bash_completion ]; then
+        . `brew --prefix`/etc/bash_completion
+    fi
+
+    ### rbenv ###
+    if which rbenv > /dev/null; then
+        export RBENV_ROOT=/usr/local/var/rbenv
+        eval "$(rbenv init -)";
+    fi
+
+    if [ -f `brew --prefix autoenv`/activate.sh ]; then
+        . `brew --prefix autoenv`/activate.sh
+    fi
+fi
+

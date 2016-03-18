@@ -1,0 +1,16 @@
+insecure_chrome() {
+    if [ -z $1 ]; then
+      datadir="/tmp/`date | md5`"
+    else
+      datadir=$1
+    fi
+    if [ ! -d $datadir ]; then
+      echo "Creating $datadir"
+      mkdir -p $datadir
+    fi
+    (
+     /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
+      --cancel-first-run --user-data-dir=$datadir --disable-web-security > /dev/null 2>&1;
+     rm -r $datadir
+    ) &
+}
