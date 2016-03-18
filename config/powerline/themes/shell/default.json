@@ -1,51 +1,47 @@
 {
-	"default_module": "powerline.segments.common",
-	"segment_data": {
-		"hostname": {
-			"before": " ",
-			"args": {
-				"only_if_ssh": true
-			}
-		},
-		"virtualenv": {
-			"before": "ⓔ  "
-		},
-		"branch": {
-			"before": " "
-		}
-	},
-	"segments": {
-		"left": [
-			{
-				"name": "hostname"
-			},
-			{
-				"name": "user"
-			},
-			{
-				"name": "virtualenv"
-			},
-			{
-				"name": "cwd",
-				"args": {
-					"dir_limit_depth": 3
-				}
-			},
+    "segments": {
+        "above": [
             {
-                "name": "branch",
-                "args": {
-                    "status_colors": true
-                }
+                "left": [
+                    {
+                        "function": "powerline.segments.shell.mode"
+                    },
+                    {
+                        "function": "powerline.segments.common.net.hostname",
+                        "priority": 10
+                    },
+                    {
+                        "function": "powerline.segments.common.env.user",
+                        "priority": 30
+                    },
+                    {
+                        "function": "powerline.segments.common.env.virtualenv",
+                        "priority": 50
+                    },
+                    {
+                        "function": "powerline.segments.shell.cwd",
+                        "priority": 10
+                    },
+                    {
+                        "function": "powerline.segments.shell.last_pipe_status",
+                        "priority": 10
+                    },
+                    {
+                        "function": "powerline.segments.common.vcs.branch",
+                        "priority": 40
+                    }
+                ]
             }
-		],
-		"right": [
-			{
-				"module": "powerline.segments.shell",
-				"name": "last_pipe_status"
-			},
-			{
-				"name": "branch"
-			}
-		]
-	}
+        ],
+        "left": [
+            {
+                "function": "powerline.segments.common.time.date",
+                "priority": 10
+            },
+            {
+                "function": "powerline.segments.shell.last_status",
+                "priority": 20
+            }
+        ]
+    }
 }
