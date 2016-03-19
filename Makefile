@@ -20,7 +20,7 @@ install-powerline :
 
 install-vim :
 	rm -fv ~/.vimrc ~/.vim/autoload/plug.vim
-	ln -s $(CURDIR)/vimrc ~/.vimrc
+	ln -s $(CURDIR)/vim/vimrc ~/.vimrc
 	mkdir -p ~/.vim/autoload/
 	ln -s $(CURDIR)/vim/autoload/plug.vim ~/.vim/autoload/plug.vim
 	vim "+PlugInstall" "+qall"
