@@ -16,7 +16,7 @@ install-bash :
 install-powerline :
 	mkdir -p $(XDG_CONFIG_HOME)
 	rm -rfv $(XDG_CONFIG_HOME)/powerline
-	ln -s $(realpath config/powerline) $(XDG_CONFIG_HOME)/powerline
+	ln -s $(realpath powerline) $(XDG_CONFIG_HOME)/powerline
 
 install-vim :
 	rm -fv ~/.vimrc ~/.vim/autoload/plug.vim
