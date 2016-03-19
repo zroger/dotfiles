@@ -6,7 +6,7 @@ XDG_CONFIG_HOME ?= $(HOME)/.config
 .DEFAULT_GOAL := install
 .PHONY : install
 
-install : install-bash install-powerline install-vim
+install : install-bash install-powerline install-vim install-tmux
 
 install-bash :
 	rm -rfv ~/.bashrc ~/.bashrc.d
@@ -24,3 +24,7 @@ install-vim :
 	mkdir -p ~/.vim/autoload/
 	ln -s $(CURDIR)/vim/autoload/plug.vim ~/.vim/autoload/plug.vim
 	vim "+PlugInstall" "+qall"
+
+install-tmux:
+	rm -fv ~/.tmux.conf
+	ln -s $(realpath tmux/tmux.conf) ~/.tmux.conf
