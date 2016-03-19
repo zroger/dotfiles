@@ -1,31 +1,26 @@
-# vim:foldmethod=marker:foldlevel=0
+# vim:foldmethod=marker:foldlevel=0:tabstop=4
 
-.PHONY: install clean bash powerline
+# Environment variable defaults
+XDG_CONFIG_HOME ?= $(HOME)/.config
+
 .DEFAULT_GOAL := install
+.PHONY : install
 
-$(HOME)/.config :
-	mkdir -p $(HOME)/.config
+install : install-bash install-powerline install-vim
 
-# bash config files {{{
-bash: $(HOME)/.bashrc $(HOME)/.bashrc.d
+install-bash :
+	rm -rfv ~/.bashrc ~/.bashrc.d
+	ln -s $(CURDIR)/bashrc ~/.bashrc
+	ln -s $(CURDIR)/bashrc ~/.bashrc.d
 
-$(HOME)/.bashrc :
-	ln -s $(CURDIR)/bashrc $@
+install-powerline :
+	mkdir -p $(XDG_CONFIG_HOME)
+	rm -rfv $(XDG_CONFIG_HOME)/powerline
+	ln -s $(CURDIR)/config/powerline $(XDG_CONFIG_HOME)/powerline
 
-$(HOME)/.bashrc.d :
-	ln -s $(CURDIR)/bashrc.d $@
-# }}}
-
-# powerline config files {{{
-powerline : $(HOME)/.config/powerline
-
-$(HOME)/.config/powerline : $(HOME)/.config
-	ln -s $(CURDIR)/.config/powerline $@
-# }}}
-
-install : bash powerline
-
-clean:
-	rm $(HOME)/.bashrc
-	rm $(HOME)/.bashrc.d
-	rm $(HOME)/.config/powerline
+install-vim :
+	rm -fv ~/.vimrc ~/.vim/autoload/plug.vim
+	ln -s $(CURDIR)/vimrc ~/.vimrc
+	mkdir -p ~/.vim/autoload/
+	ln -s $(CURDIR)/vim/autoload/plug.vim ~/.vim/autoload/plug.vim
+	vim "+PlugInstall" "+qall"
