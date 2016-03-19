@@ -10,8 +10,8 @@ install : install-bash install-powerline install-vim install-tmux
 
 install-bash :
 	rm -rfv ~/.bashrc ~/.bashrc.d
-	ln -s $(realpath bashrc) ~/.bashrc
-	ln -s $(realpath bashrc.d) ~/.bashrc.d
+	ln -s $(realpath bash/bashrc) ~/.bashrc
+	ln -s $(realpath bash/bashrc.d) ~/.bashrc.d
 
 install-powerline :
 	mkdir -p $(XDG_CONFIG_HOME)
