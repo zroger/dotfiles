@@ -10,7 +10,8 @@ Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
-Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/syntastic'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -95,7 +96,6 @@ let g:syntastic_mode_map = {
 
 " }}}
 
-
 " nerdtree ---------------------------------- {{{
 let NERDTreeMinimalUI=1
 let NERDTreeQuitOnOpen=1
@@ -114,12 +114,6 @@ endfunction
 " }}}
 
 " gui settings
-if (&t_Co == 256 || has('gui_running'))
-  if ($TERM_PROGRAM == 'iTerm.app')
-    colorscheme solarized
-  else
-    colorscheme desert
-  endif
-endif
+colorscheme solarized
 
 " vim: set filetype=vim
