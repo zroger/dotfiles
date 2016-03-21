@@ -1,5 +1,6 @@
 # vim:foldmethod=marker:foldlevel=0:tabstop=4
 
+SHELL := /bin/bash
 # Environment variable defaults
 XDG_CONFIG_HOME ?= $(HOME)/.config
 

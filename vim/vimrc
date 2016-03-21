@@ -115,6 +115,8 @@ endfunction
 
 " gui settings
 colorscheme solarized
+" This is necessary over SSH where COLORFGBG doesn't get passed.
+set background=dark
 
 "" Include local customizations.
 if filereadable(expand("~/.vimrc.local"))
