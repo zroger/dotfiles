@@ -4,9 +4,6 @@
             {
                 "left": [
                     {
-                        "function": "powerline.segments.shell.mode"
-                    },
-                    {
                         "function": "powerline.segments.common.net.hostname",
                         "priority": 10
                     },
@@ -15,15 +12,7 @@
                         "priority": 30
                     },
                     {
-                        "function": "powerline.segments.common.env.virtualenv",
-                        "priority": 50
-                    },
-                    {
                         "function": "powerline.segments.shell.cwd",
-                        "priority": 10
-                    },
-                    {
-                        "function": "powerline.segments.shell.last_pipe_status",
                         "priority": 10
                     },
                     {
@@ -36,7 +25,11 @@
         "left": [
             {
                 "function": "powerline.segments.common.time.date",
-                "priority": 10
+                "priority": 10,
+                "args": {
+                    "format": "%H:%M:%S",
+                    "istime": true
+                }
             },
             {
                 "function": "powerline.segments.shell.last_status",
