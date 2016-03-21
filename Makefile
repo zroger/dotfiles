@@ -17,7 +17,7 @@ install-powerline :
 	mkdir -p $(XDG_CONFIG_HOME)
 	rm -rfv $(XDG_CONFIG_HOME)/powerline
 	ln -s $(realpath powerline) $(XDG_CONFIG_HOME)/powerline
-	powerline-daemon --replace
+	[[ -z `which powerline-daemon` ]] || powerline-daemon --replace
 
 install-vim :
 	rm -fv ~/.vimrc ~/.vim/autoload/plug.vim

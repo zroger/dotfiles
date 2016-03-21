@@ -116,4 +116,9 @@ endfunction
 " gui settings
 colorscheme solarized
 
+"" Include local customizations.
+if filereadable(expand("~/.vimrc.local"))
+  source ~/.vimrc.local
+endif
+
 " vim: set filetype=vim
