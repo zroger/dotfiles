@@ -1,21 +1,31 @@
 # -*- mode: shell-script -*-
 
+#__DOTFILES_DEBUG=1
+
+__log() {
+    if [ ! -z "${__DOTFILES_DEBUG}" ]; then
+        echo "[DEBUG] ${1} (${SECONDS} seconds)"
+    fi
+}
+
+__log "Entered .bashrc"
+
 ### Basic config ###
 export CLICOLOR=1
 export EDITOR=$(which vim 2>/dev/null)
 
 ### Include modules from .bashrc.d
 if [ -d ~/.bashrc.d ]; then
-    for f in ~/.bashrc.d/*; do source $f; done
-fi
-
-### Add ruby gems user directory to path.
-if which ruby >/dev/null && which gem >/dev/null; then
-    export PATH="$(ruby -rubygems -e 'puts Gem.user_dir')/bin":$PATH
+    __log "Loading modules from .bashrc.d"
+    for f in ~/.bashrc.d/*; do
+        __log "Loading $f"
+        source $f;
+    done
 fi
 
 # use .localrc for settings specific to one system
 if [ -f ~/.localrc ]; then
+  __log ".localrc"
   source ~/.localrc
 fi
 

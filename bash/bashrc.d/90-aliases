@@ -10,3 +10,5 @@ function volume {
 }
 
 alias xmlcat="tidy -i -xml"
+
+alias unfuck-paste='printf "\e[?2004l"'

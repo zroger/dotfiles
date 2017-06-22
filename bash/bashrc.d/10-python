@@ -4,22 +4,12 @@ export PIP_RESPECT_VIRTUALENV=true
 export PYTHONDONTWRITEBYTECODE=true
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 
-#VIRTUALENVWRAPPER="$(which virtualenvwrapper.sh)"
-#if [ -f "$VIRTUALENVWRAPPER" ]; then
-#    mkdir -p ~/Envs
-#    export WORKON_HOME=~/Envs
-#    source "$VIRTUALENVWRAPPER"
-#
-#    (workon | grep -e '^default$' > /dev/null) || mkvirtualenv default
-#    workon default
-#
-#else
-#    echo "### virtualenvwrapper not found ###"
-#fi
-
-
 # `pip install --user` installs to ~/.local
 if [[ -d ~/.local/bin ]]; then
     export PATH=$PATH:~/.local/bin
 fi
 
+if [ -n "$(which pyenv 2>/dev/null)" ] ; then
+    __log "pyenv init"
+    eval "$(pyenv init -)"
+fi

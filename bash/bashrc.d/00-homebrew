@@ -1,4 +1,5 @@
 ### Homebrew stuff ###
+__log "00-homebrew start"
 HOMEBREW="$(which brew 2>/dev/null)"
 if [ -n "$HOMEBREW" ] ; then
     # Make sure brew path comes first so its executables
@@ -7,18 +8,9 @@ if [ -n "$HOMEBREW" ] ; then
     export PATH=`brew --prefix`/bin:`brew --prefix`/sbin:$PATH
 
     ### bash-completion ###
+    __log "00-homebrew bash-completion"
     if [ -f `brew --prefix`/etc/bash_completion ]; then
         . `brew --prefix`/etc/bash_completion
-    fi
-
-    ### rbenv ###
-    if which rbenv > /dev/null; then
-        export RBENV_ROOT=/usr/local/var/rbenv
-        eval "$(rbenv init -)";
-    fi
-
-    if [ -f `brew --prefix autoenv`/activate.sh ]; then
-        . `brew --prefix autoenv`/activate.sh
     fi
 fi
 
