@@ -1,4 +1,5 @@
-# -*- mode: shell-script -*-
+#!/bin/bash
+## -*- mode: shell-script -*-
 
 alias reload='. ~/.bash_profile'
 

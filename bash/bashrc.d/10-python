@@ -1,4 +1,6 @@
-### python ###
+#!/bin/bash
+#
+#### python ###
 export PIP_RESPECT_VIRTUALENV=true
 # export PIP_REQUIRE_VIRTUALENV=true
 export PYTHONDONTWRITEBYTECODE=true
