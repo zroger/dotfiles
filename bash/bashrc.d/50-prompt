@@ -1,14 +1,254 @@
-# Use bash powerline prompt if available; fallback to old prompt otherwise
-POWERLINE_COMMAND=$(which powerline)
-if [ -n "$POWERLINE_COMMAND" ]; then
-    POWERLINE_DIR=$(dirname $(dirname $(python -c "import powerline; print powerline.__file__")))
+#!/usr/bin/env bash
 
-    powerline-daemon -q
-    POWERLINE_BASH_CONTINUATION=1
-    POWERLINE_BASH_SELECT=1
-    . "$POWERLINE_DIR"/powerline/bindings/bash/powerline.sh
-else
-    source ~/.bash/prompt
-fi
+# Powerline-like prompt implemented in bash.
+#
+# Inspiration and a lot of code borrowed from
+# https://github.com/riobard/bash-powerline
 
 
+# These variables act as feature toggles for the prompt.
+__dot_color_mode="rgb"
+__dot_nerdfont="true"
+
+termconfig() {
+    printf "Use 24-bit RGB colors? [y/n] "
+    read -r resp
+    case "$resp" in
+        y|Y)
+            printf "=> Using 24-bit color mode.\n"
+            __dot_color_mode="rgb"
+            ;;
+        *)
+            printf "=> Using xterm 256 color mode.\n"
+            unset __dot_color_mode
+            ;;
+    esac
+
+    printf "Are you using a nerdfont? [y/n] "
+    read -r resp
+    case "$resp" in
+        y|Y)
+            printf "=> Using nerdfont glyphs.\n"
+            __dot_nerdfont="true"
+            ;;
+        *)
+            printf "=> Disabling nerdfont glyphs.\n"
+            unset __dot_nerdfont
+            ;;
+    esac
+}
+
+__setup_prompt() {
+    __git_info() {
+        [ -x "$(which git)" ] || return    # git not found
+
+        local GIT_BRANCH_SYMBOL=' '
+        local GIT_BRANCH_CHANGED_SYMBOL='+'
+        local GIT_NEED_PUSH_SYMBOL='⇡'
+        local GIT_NEED_PULL_SYMBOL='⇣'
+
+        # force git output in English to make our work easier
+        local git_eng="env LANG=C git"
+        # get current branch name or short SHA1 hash for detached head
+        local branch
+        branch="$($git_eng symbolic-ref --short HEAD 2>/dev/null || \
+            $git_eng describe --tags --always 2>/dev/null)"
+        [ -n "$branch" ] || return  # git branch not found
+
+        local marks
+
+        # branch is modified?
+        [ -n "$($git_eng status --porcelain)" ] && marks+=" $GIT_BRANCH_CHANGED_SYMBOL"
+
+        # how many commits local branch is ahead/behind of remote?
+        local stat
+        stat="$($git_eng status --porcelain --branch \
+            | grep '^##' | grep -o '\[.\+\]$')"
+        local aheadN
+        aheadN="$(echo "$stat" \
+            | grep -o 'ahead [[:digit:]]\+' | grep -o '[[:digit:]]\+')"
+        local behindN
+        behindN="$(echo "$stat" \
+            | grep -o 'behind [[:digit:]]\+' | grep -o '[[:digit:]]\+')"
+        [ -n "$aheadN" ] && marks+=" $GIT_NEED_PUSH_SYMBOL$aheadN"
+        [ -n "$behindN" ] && marks+=" $GIT_NEED_PULL_SYMBOL$behindN"
+
+        # print the git branch segment without a trailing newline
+        printf " %s%s%s " "$GIT_BRANCH_SYMBOL" "$branch" "$marks"
+    }
+
+    # Print a powerline styled segment. Optionally uses environment
+    # variables FG, BG, and PREV_BG.
+    segment() {
+        local text=$*
+
+        if [ ! -z "$BG" ]; then
+            printf "\[\x1b[48;%sm\]" "${BG}"
+        fi
+
+        if [ ! -z "$PREV_BG" ]; then
+            if [ ! -z "$__dot_nerdfont" ]; then
+                printf "\[\x1b[38;%sm\]" "${PREV_BG}"
+                printf ""
+            fi
+        fi
+
+        if [ ! -z "$FG" ]; then
+            printf "\[\x1b[38;%sm\]" "${FG}"
+        fi
+
+        printf "%b" "$text"
+
+        # Reset
+        printf "\[%s\]" "$(tput sgr0)"
+    }
+
+    # Bash by default expands the content of PS1 unless promptvars is disabled.
+    # We must use another layer of reference to prevent expanding any user
+    # provided strings, which would cause security issues.
+    # POC: https://github.com/njhartwell/pw3nage
+    # Related fix in git-bash:
+    # https://github.com/git/git/blob/9d77b04/contrib/completion/git-prompt.sh
+    escape_ps1_expansion() {
+        local varname=$1
+        if shopt -q promptvars; then
+            printf "\${%s}" "${varname}"
+        else
+            # promptvars is disabled. Avoid creating unnecessary env var.
+            printf "%s" "${!varname}"
+            unset "${varname}"
+        fi
+    }
+
+    ps1() {
+        # Save the exit code first so it doesn't get overwritten.
+        local exit_code=$?
+
+        # shellcheck disable=SC2034
+        if [[ "$__dot_color_mode" == "rgb" ]]; then
+            local BASE03="2;0;43;54"
+            local BASE02="2;7;54;66"
+            local BASE01="2;88;110;117"
+            local BASE00="2;101;123;131"
+            local BASE0="2;131;148;150"
+            local BASE1="2;147;161;161"
+            local BASE2="2;238;232;213"
+            local BASE3="2;253;246;227"
+            local YELLOW="2;181;137;0"
+            local ORANGE="2;203;75;22"
+            local RED="2;220;50;47"
+            local MAGENTA="2;211;54;130"
+            local VIOLET="2;108;113;196"
+            local BLUE="2;38;139;210"
+            local CYAN="2;42;161;152"
+            local GREEN="2;133;153;0"
+        else
+            # Fallback to xterm-256 colors.
+            local BASE03="5;234"
+            local BASE02="5;235"
+            local BASE01="5;240"
+            local BASE00="5;241"
+            local BASE0="5;244"
+            local BASE1="5;245"
+            local BASE2="5;254"
+            local BASE3="5;230"
+            local YELLOW="5;136"
+            local ORANGE="5;166"
+            local RED="5;160"
+            local MAGENTA="5;125"
+            local VIOLET="5;61"
+            local BLUE="5;33"
+            local CYAN="5;37"
+            local GREEN="5;64"
+        fi
+
+        local BG=""
+        local FG=""
+        local PREV_BG=""
+
+        PS1="\n"
+
+        # OS
+        case "$(uname)" in
+            Darwin)
+                FG=$BASE01
+                BG=$BASE3
+                PS1+=$(segment " $(gprintf "\uE711") ")
+                PREV_BG=$BG
+                ;;
+            Linux)
+                case "$(lsb_release -is)" in
+                    Ubuntu)
+                        FG=$ORANGE
+                        BG=$BASE3
+                        PS1+=$(segment " $(gprintf "\uF30C") ")
+                        PREV_BG=$BG
+                        ;;
+                    *)
+                        ;;
+                esac
+                ;;
+            *)
+                ;;
+        esac
+
+        # Hostname
+        FG=$BASE3
+        BG=$CYAN
+        PS1+=$(segment " \\\\u@\\\\h ")
+        PREV_BG=$BG
+
+        # Working directory
+        local pwd=${PWD/$HOME/"~"}
+        if [ ! -z "$__dot_nerdfont" ]; then
+            pwd=${pwd//\//  }
+        fi
+        FG=$BASE2
+        BG=$BASE01
+        PS1+=$(segment " $pwd ")
+        PREV_BG=$BG
+
+        # Git
+        __ps1_git_info=$(__git_info)
+        if [[ ! -z "$__ps1_git_info" ]]; then
+            FG=$BASE2
+            BG=$BASE00
+            PS1+=$(segment " $(escape_ps1_expansion "__ps1_git_info")")
+            PREV_BG=$BG
+        fi
+
+        # Clear to end of line and line-break
+        FG=""
+        BG="$BASE02"
+        PS1+=$(segment "\[\x1b[K\]\n")
+        PREV_BG="" # New-line
+
+        # Time
+        FG=$BASE2
+        BG=$BASE01
+        PS1+=$(segment " $(date +%H:%M:%S) ")
+        PREV_BG=$BG
+
+        # Exit code
+        if [ $exit_code -ne 0 ]; then
+            FG=$BASE2
+            BG=$RED
+            PS1+=$(segment " $exit_code ")
+            PREV_BG=$BG
+        fi
+
+        # Final arrow
+        FG=""
+        BG=""
+        PS1+=$(segment " ")
+    }
+
+    PROMPT_COMMAND=ps1
+}
+
+__setup_prompt
+unset __setup_prompt
+
+printf "*** If the colors or the fonts dont look right, run "
+printf "%stermconfig%s" "$(tput setaf 37)$(tput bold)" "$(tput sgr0)"
+printf ". ***\n"
