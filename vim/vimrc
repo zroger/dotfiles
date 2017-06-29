@@ -22,6 +22,7 @@ Plug 'kchmck/vim-coffee-script'
 Plug 'nono/vim-handlebars'
 Plug 'mitsuhiko/vim-jinja'
 Plug 'hdima/python-syntax'
+Plug 'vim-scripts/groovy.vim'
 
 " Color schemes
 Plug 'altercation/vim-colors-solarized'
@@ -34,8 +35,16 @@ set number
 set ruler
 set exrc        " enable per-directory .vimrc files
 set secure      " disable unsafe commands in local .vimrc files
+set colorcolumn=72,80
+
+set tabstop=8
+set expandtab
+set shiftwidth=4
+set softtabstop=4
 
 " General FileType settings ------------------ {{{
+au BufNewFile,BufRead *.es6 set filetype=javascript
+
 augroup FTOptions
     autocmd!
     autocmd FileType netrw nnoremap q :bp\|bd #<CR>
@@ -66,7 +75,7 @@ let g:ctrlp_custom_ignore = {
     \ 'file': '\v\.(pyc)$',
     \ }
 
-let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+"let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 
 " Set delay to prevent extra search
 let g:ctrlp_lazy_update = 350
@@ -131,7 +140,7 @@ endfunction
 " gui settings
 colorscheme solarized
 " This is necessary over SSH where COLORFGBG doesn't get passed.
-set background=dark
+" set background=dark
 
 "" Include local customizations.
 if filereadable(expand("~/.vimrc.local"))
