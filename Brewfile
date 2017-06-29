@@ -1,5 +1,10 @@
 tap 'homebrew/bundle'
 
+# xz is a dependency of the_silver_searcher and unless it is installed
+# as `universal`, it can mess up Ruby stuff.
+# http://www.nokogiri.org/tutorials/installing_nokogiri.html#mac_os_x
+brew 'xz', args: ['universal']
+
 brew 'awscli'
 brew 'coreutils'
 brew 'bash-completion'
