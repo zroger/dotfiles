@@ -174,7 +174,7 @@ __setup_prompt() {
                 FG=$BASE01
                 BG=$BASE3
                 # Apple logo U+3711 = 0xee 0x9c 0x91
-                PS1+=$(segment " $(printf "\xee\x9x\x91") ")
+                PS1+=$(segment " $(printf "\xee\x9c\x91") ")
                 PREV_BG=$BG
                 ;;
             Linux)
