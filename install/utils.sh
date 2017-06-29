@@ -26,7 +26,7 @@ backup() {
 }
 
 ok() {
-    if which grintf; then
+    if which gprintf; then
         gprintf "\x1b[38;5;64m \uf058 \x1b[0m %s\n" "$1"
     else
         printf "\x1b[38;5;64m \uf058 \x1b[0m %s\n" "$1"
@@ -34,7 +34,7 @@ ok() {
 }
 
 info() {
-    if which grintf; then
+    if which gprintf; then
         gprintf "\x1b[38;5;254m \uf05a \x1b[0m %s\n" "$1"
     else
         printf "\x1b[38;5;254m \uf05a \x1b[0m %s\n" "$1"
