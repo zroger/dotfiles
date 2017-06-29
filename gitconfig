@@ -19,19 +19,31 @@
   df = diff
   lg = log -p
   ls = ls-files
+  ; delete merged branches
+  branch-cleanup = "!git branch --merged | grep -v '*' | xargs -L1 git branch -d"
 
 [diff]
   tool = diffmerge
 [difftool "diffmerge"]
-  cmd = diffmerge.sh \"$LOCAL\" \"$REMOTE\"
+  cmd = diffmerge --nosplash \"$LOCAL\" \"$REMOTE\"
 
 [merge]
   tool = diffmerge
 [mergetool "diffmerge"]
-  cmd = diffmerge.sh --result="$MERGED" "$LOCAL" "$(if test -f "$BASE"; then echo "$BASE"; else echo "$LOCAL"; fi)" "$REMOTE" --title1="Mine" --title2="Merged" --title3="Theirs"
+  cmd = diffmerge --nosplash --result="$MERGED" "$LOCAL" "$(if test -f "$BASE"; then echo "$BASE"; else echo "$LOCAL"; fi)" "$REMOTE" --title1="Mine" --title2="Merged" --title3="Theirs"
+  trustExitCode = true
 
 [push]
   default = current
 
 [include]
   path = .gitconfig.local
+
+[hub]
+protocol = https
+
+[commit]
+gpgsign = true
+
+[gpg]
+program = /usr/local/bin/gpg
