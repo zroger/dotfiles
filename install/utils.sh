@@ -26,11 +26,19 @@ backup() {
 }
 
 ok() {
-    gprintf "\x1b[38;5;64m \uf058 \x1b[0m %s\n" "$1"
+    if which grintf; then
+        gprintf "\x1b[38;5;64m \uf058 \x1b[0m %s\n" "$1"
+    else
+        printf "\x1b[38;5;64m \uf058 \x1b[0m %s\n" "$1"
+    fi
 }
 
 info() {
-    gprintf "\x1b[38;5;254m \uf05a \x1b[0m %s\n" "$1"
+    if which grintf; then
+        gprintf "\x1b[38;5;254m \uf05a \x1b[0m %s\n" "$1"
+    else
+        printf "\x1b[38;5;254m \uf05a \x1b[0m %s\n" "$1"
+    fi
 }
 
 symlink() {
