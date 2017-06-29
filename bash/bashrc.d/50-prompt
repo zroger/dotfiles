@@ -173,7 +173,11 @@ __setup_prompt() {
             Darwin)
                 FG=$BASE01
                 BG=$BASE3
-                PS1+=$(segment " $(gprintf "\uE711") ")
+                if which gprintf; then
+                    PS1+=$(segment " $(gprintf "\uE711") ")
+                else
+                    PS1+=$(segment " $(printf "\uE711") ")
+                fi
                 PREV_BG=$BG
                 ;;
             Linux)
@@ -181,7 +185,11 @@ __setup_prompt() {
                     Ubuntu)
                         FG=$ORANGE
                         BG=$BASE3
-                        PS1+=$(segment " $(gprintf "\uF30C") ")
+                        if which gprintf; then
+                            PS1+=$(segment " $(gprintf "\uF30C") ")
+                        else
+                            PS1+=$(segment " $(printf "\uF30C") ")
+                        fi
                         PREV_BG=$BG
                         ;;
                     *)
