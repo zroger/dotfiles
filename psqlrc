@@ -1,0 +1,54 @@
+-- ~/.psqlrc
+
+-- Always show query timing.
+\timing
+
+-- Make the pager behave better.
+-- http://merlinmoncure.blogspot.com/2007/10/better-psql-with-less.html
+\setenv PAGER 'less'
+\setenv LESS '-iMSx4 -FX'
+
+-- Choose a primary color based on the hostname used to connect.
+SELECT
+  CASE
+    WHEN :'HOST' like 'prod%' THEN '160' -- solarized red
+    WHEN :'HOST' like 'stage%' THEN '136' -- solorized yellow
+    ELSE '37' -- solarized cyan
+  END AS hostname_color;
+\gset
+\set bg_hostname '%[\x1b[48;5;' :hostname_color 'm%]'
+\set fg_hostname '%[\x1b[38;5;' :hostname_color 'm%]'
+
+-- The other solarized colors we'll be using.
+\set bg_base02 '%[\x1b[48;5;235m%]'
+\set fg_base02 '%[\x1b[38;5;235m%]'
+\set fg_base1  '%[\x1b[38;5;245m%]'
+\set reset     '%[\x1b[0m%]'
+\set arrow     ''
+
+-- n.b. psql sets the max length for the prompt to 256 characters, so be mindful
+-- of all the escape sequences. This is also why I'm not using the RGB colors :(
+
+-- Begin the prompt with a newline to make sure we always start clean.
+\set PROMPT1 '\n'
+
+-- First line
+\set PROMPT1 :PROMPT1 :bg_hostname '%[\x1b[38;5;234m%]'
+\set PROMPT1 :PROMPT1 ' psql '
+\set PROMPT1 :PROMPT1 :fg_hostname :bg_base02
+\set PROMPT1 :PROMPT1 :arrow
+\set PROMPT1 :PROMPT1 ' %n@%M/%/ '
+\set PROMPT1 :PROMPT1 :reset :fg_base02
+\set PROMPT1 :PROMPT1 :arrow '\n'
+
+-- Second line
+\set PROMPT1 :PROMPT1 :bg_base02 :fg_base1
+\set PROMPT1 :PROMPT1 ' %`date +%H:%M:%S` '
+\set PROMPT1 :PROMPT1 :reset :fg_base02
+\set PROMPT1 :PROMPT1 :arrow :reset ' '
+
+-- PROMPT2: line continuation.
+\set PROMPT2 :bg_base02 :fg_base1
+\set PROMPT2 :PROMPT2 ' %R '
+\set PROMPT2 :PROMPT2 :reset :fg_base02
+\set PROMPT2 :PROMPT2 :arrow :reset ' '
