@@ -16,6 +16,7 @@ linux && {
 }
 
 header "symlinks"
+symlink bash_profile ~/.bash_profile
 symlink bash/bashrc ~/.bashrc
 symlink bash/bashrc.d ~/.bashrc.d
 symlink psqlrc ~/.psqlrc
