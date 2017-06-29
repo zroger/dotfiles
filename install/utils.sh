@@ -4,6 +4,16 @@ set -e
 # Don't re-evaluate multiple times in the same shell.
 test -n "$__dotfile_utils_loaded" && return || __dotfile_utils_loaded=1
 
+abspath() {
+    if [[ -d "$1" ]]; then
+        cd "$1"
+        echo "$(pwd -P)"
+    else
+        cd "$(dirname "$1")"
+        echo "$(pwd -P)/$(basename "$1")"
+    fi
+}
+
 format_path() {
     printf "%s" "${1/"$HOME"/"~"}"
 }
@@ -25,7 +35,7 @@ info() {
 
 symlink() {
     local src dst name
-    src="$(realpath "$1")"
+    src="$(abspath "$1")"
     dst="$2"
     name="$(format_path "$dst")"
 
