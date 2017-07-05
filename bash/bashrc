@@ -14,6 +14,12 @@ __log "Entered .bashrc"
 export CLICOLOR=1
 export EDITOR=$(which vim 2>/dev/null)
 
+export DOTFILES
+DOTFILES="$(dirname "$(dirname "$(readlink "${HOME}/.bashrc")")")"
+
+export PATH
+PATH="${DOTFILES}/bin:${PATH}"
+
 ### Include modules from .bashrc.d
 if [ -d ~/.bashrc.d ]; then
     __log "Loading modules from .bashrc.d"

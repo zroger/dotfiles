@@ -20,7 +20,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'juvenn/mustache.vim'
 Plug 'kchmck/vim-coffee-script'
 Plug 'nono/vim-handlebars'
-Plug 'mitsuhiko/vim-jinja'
+"Plug 'mitsuhiko/vim-jinja'
 Plug 'hdima/python-syntax'
 Plug 'vim-scripts/groovy.vim'
 

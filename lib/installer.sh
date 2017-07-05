@@ -32,12 +32,17 @@ ok() {
 
 info() {
     # Info mark: U+f05a = 0xef 0x81 0x9a
-    printf "\x1b[38;5;254m \xef\x81\x98 \x1b[0m %s\n" "$1"
+    printf "\x1b[38;5;254m \xef\x81\x9a \x1b[0m %s\n" "$1"
+}
+
+error() {
+    # X: U+f057 = 0xef 0x81 0x97
+    printf "\x1b[38;5;254m \xef\x81\x97 \x1b[0m %s\n" "$1"
 }
 
 symlink() {
     local src dst name
-    src="$(abspath "$1")"
+    src="$(abspath "${DOTFILES}/$1")"
     dst="$2"
     name="$(format_path "$dst")"
 
@@ -51,6 +56,7 @@ symlink() {
         }
     fi
 
+    mkdir -p "$(dirname "$dst")"
     ln -s "$src" "$dst" && {
         ok "${name} installed"
     }
@@ -69,4 +75,44 @@ mac_os() {
 
 linux() {
     [[ "$(uname)" == "Linux" ]]
+}
+
+assert_bin() {
+    [ -x "$(which "$1")" ] || {
+        echo "${1} is required."
+        exit 1
+    }
+}
+
+
+linuxbrew() {
+    [ -x "$(which brew)" ] && {
+        ok linuxbrew
+        return
+    }
+
+    linux || {
+        error "Linuxbrew can only be installed on linux."
+        exit 1
+    }
+    assert_bin curl
+    assert_bin git
+
+    HOMEBREW_PATH="${HOME}/.linuxbrew"
+    BREW_REPO="https://github.com/Linuxbrew/brew"
+    info "Installing linuxbrew to ~/.linuxbrew"
+    git clone "${BREW_REPO}" "${HOMEBREW_PATH}" >> ~/.dotfiles.log 2>&1
+    if [ $? -eq 0 ]; then
+        ok "Linuxbrew installed."
+    else
+        error "Failed to install Linuxbrew. Check ~/.dotfiles.log for more info."
+    fi
+
+    info "Tapping Hombrew/bundle"
+    "$HOMEBREW_PATH"/bin/brew tap Homebrew/bundle >> ~/.dotfiles.log 2>&1
+    if [ $? -eq 0 ]; then
+        ok "Homebrew/bundle tapped."
+    else
+        error "Failed to tap Homebrew/bundle. Check ~/.dotfiles.log for more info."
+    fi
 }

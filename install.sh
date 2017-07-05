@@ -1,18 +1,21 @@
 #!/bin/bash -e
 
 export DOTFILES
-DOTFILES="$(dirname "$(readlink "${BASH_SOURCE[0]}")")"
-# shellcheck source=install/utils.sh
-source "${DOTFILES}/install/utils.sh"
+DOTFILES="$(dirname "${BASH_SOURCE[0]}")"
+# shellcheck source=lib/installer.sh
+source "${DOTFILES}/lib/installer.sh"
 
 
 mac_os && {
-    header "homebrew packages"
-    brew bundle install
+    header "macos stuff"
+    homebrew
+    brew bundle install --file="${DOTFILES}/macos/Brewfile"
 }
 
 linux && {
     header "linux stuff"
+    linuxbrew
+    brew bundle install --file="${DOTFILES}/linux/Brewfile"
 }
 
 header "symlinks"
