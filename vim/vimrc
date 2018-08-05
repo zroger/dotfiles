@@ -124,14 +124,30 @@ function! NERDTreeToggleInCurDir()
 endfunction
 " }}}
 
-" gui settings
+" color settings ---------------------------------- {{{{{{
 colorscheme solarized
-" This is necessary over SSH where COLORFGBG doesn't get passed.
-" set background=dark
+
+" Use dark as the default background. Might need to add more conditions
+" in which to trigger the light background.
+if $ITERM_PROFILE == 'Light'
+  set background=light
+else
+  set background=dark
+endif
+
+" From https://github.com/vim-scripts/Solarized#option-details
+"
+" This tells Solarized to use the 256 degraded color mode if running in a
+" 256 color capable terminal. Otherwise, if set to 16 it will use the
+" terminal emulators colorscheme.
+"
+" I assume I'm always using this vimrc within such a terminal.
+let g:solarized_termcolors=16
 
 "" Include local customizations.
 if filereadable(expand("~/.vimrc.local"))
   source ~/.vimrc.local
 endif
+" }}}}}}
 
 " vim: set filetype=vim
