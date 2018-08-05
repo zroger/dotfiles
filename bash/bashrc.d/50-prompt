@@ -7,23 +7,29 @@
 
 
 # These variables act as feature toggles for the prompt.
-__dot_color_mode="rgb"
 __dot_nerdfont="true"
 
-termconfig() {
-    printf "Use 24-bit RGB colors? [y/n] "
-    read -r resp
-    case "$resp" in
-        y|Y)
-            printf "=> Using 24-bit color mode.\n"
-            __dot_color_mode="rgb"
-            ;;
-        *)
-            printf "=> Using xterm 256 color mode.\n"
-            unset __dot_color_mode
-            ;;
-    esac
+# Map solarized color names to the 16-color ANSI equivalent. This assumes
+# the terminal is configured to use standard solarized color mapping.
+BASE03="8"  # Bright Black
+BASE02="0"  # Black
+BASE01="10"  # Bright Green
+BASE00="11"  # Bright Yellow
+BASE0="12"  # Bright Blue
+BASE1="14"  # Bright Cyan
+BASE2="7"  # White
+BASE3="15"  # Bright White
+YELLOW="3"  # Yellow
+ORANGE="9"  # Bright Red
+RED="1"  # Red
+MAGENTA="5"  # Magenta
+VIOLET="13"  # Bright Magenta
+BLUE="4"  # Blue
+CYAN="6"  # Cyan
+GREEN="2"  # Green
 
+
+termconfig() {
     printf "Are you using a nerdfont? [y/n] "
     read -r resp
     case "$resp" in
@@ -83,18 +89,18 @@ __setup_prompt() {
         local text=$*
 
         if [ ! -z "$BG" ]; then
-            printf "\[\x1b[48;%sm\]" "${BG}"
+            printf "\[\x1b[48;5;%sm\]" "${BG}"
         fi
 
         if [ ! -z "$PREV_BG" ]; then
             if [ ! -z "$__dot_nerdfont" ]; then
-                printf "\[\x1b[38;%sm\]" "${PREV_BG}"
+                printf "\[\x1b[38;5;%sm\]" "${PREV_BG}"
                 printf ""
             fi
         fi
 
         if [ ! -z "$FG" ]; then
-            printf "\[\x1b[38;%sm\]" "${FG}"
+            printf "\[\x1b[38;5;%sm\]" "${FG}"
         fi
 
         printf "%b" "$text"
@@ -123,48 +129,14 @@ __setup_prompt() {
     ps1() {
         # Save the exit code first so it doesn't get overwritten.
         local exit_code=$?
-
-        # shellcheck disable=SC2034
-        if [[ "$__dot_color_mode" == "rgb" ]]; then
-            local BASE03="2;0;43;54"
-            local BASE02="2;7;54;66"
-            local BASE01="2;88;110;117"
-            local BASE00="2;101;123;131"
-            local BASE0="2;131;148;150"
-            local BASE1="2;147;161;161"
-            local BASE2="2;238;232;213"
-            local BASE3="2;253;246;227"
-            local YELLOW="2;181;137;0"
-            local ORANGE="2;203;75;22"
-            local RED="2;220;50;47"
-            local MAGENTA="2;211;54;130"
-            local VIOLET="2;108;113;196"
-            local BLUE="2;38;139;210"
-            local CYAN="2;42;161;152"
-            local GREEN="2;133;153;0"
-        else
-            # Fallback to xterm-256 colors.
-            local BASE03="5;234"
-            local BASE02="5;235"
-            local BASE01="5;240"
-            local BASE00="5;241"
-            local BASE0="5;244"
-            local BASE1="5;245"
-            local BASE2="5;254"
-            local BASE3="5;230"
-            local YELLOW="5;136"
-            local ORANGE="5;166"
-            local RED="5;160"
-            local MAGENTA="5;125"
-            local VIOLET="5;61"
-            local BLUE="5;33"
-            local CYAN="5;37"
-            local GREEN="5;64"
-        fi
-
         local BG=""
         local FG=""
         local PREV_BG=""
+
+        local theme="dark"
+        if [[ "${ITERM_PROFILE}" == "Light" ]]; then
+            theme="light"
+        fi
 
         PS1="\n"
 
@@ -221,7 +193,11 @@ __setup_prompt() {
 
         # Clear to end of line and line-break
         FG=""
-        BG="$BASE02"
+        if [[ "${theme}" == "light" ]]; then
+            BG="$BASE2"
+        else
+            BG="$BASE02"
+        fi
         PS1+=$(segment "\[\x1b[K\]\n")
         PREV_BG="" # New-line
 
