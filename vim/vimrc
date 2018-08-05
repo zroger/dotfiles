@@ -4,6 +4,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'kien/ctrlp.vim'
 Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-rhubarb'
@@ -12,9 +13,10 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'scrooloose/syntastic'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'pangloss/vim-javascript'
 
 " Syntax
 Plug 'juvenn/mustache.vim'
@@ -23,6 +25,8 @@ Plug 'nono/vim-handlebars'
 "Plug 'mitsuhiko/vim-jinja'
 Plug 'hdima/python-syntax'
 Plug 'vim-scripts/groovy.vim'
+Plug 'tpope/vim-liquid'
+Plug 'stephpy/vim-yaml'
 
 " Color schemes
 Plug 'altercation/vim-colors-solarized'
@@ -101,23 +105,6 @@ endif
 " airline {{{
 "let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1 
-" }}}
-
-" syntastic ---------------------------------- {{{
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 0
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_loc_list_height = 10
-let g:syntastic_mode_map = {
-        \ "mode": "passive",
-        \ "active_filetypes": [],
-        \ "passive_filetypes": [] }
-
 " }}}
 
 " nerdtree ---------------------------------- {{{
