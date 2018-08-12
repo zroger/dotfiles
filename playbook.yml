@@ -13,12 +13,12 @@
         src: "{{ playbook_dir }}/{{ item.src }}"
         dest: "{{ ansible_env.HOME }}/{{ item.dest }}"
       with_items:
-        - src: bash_profile
+        - src: bash/bash_profile
           dest: .bash_profile
         - src: bash/bashrc
           dest: .bashrc
-        - src: bash/bashrc.d
-          dest: .bashrc.d
+        - src: bash/bash_prompt
+          dest: .bash_prompt
 
     - name: tmux config
       file: 

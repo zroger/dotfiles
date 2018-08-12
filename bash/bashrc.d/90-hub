@@ -1,6 +1,0 @@
-#!/bin/bash
-## -*- mode: shell-script -*-
-
-if [[ -x /usr/local/bin/hub ]]; then
-    alias git=hub
-fi

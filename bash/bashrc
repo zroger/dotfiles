@@ -20,13 +20,50 @@ DOTFILES="$(dirname "$(dirname "$(readlink "${HOME}/.bashrc")")")"
 export PATH
 PATH="${DOTFILES}/bin:${PATH}"
 
-### Include modules from .bashrc.d
-if [ -d ~/.bashrc.d ]; then
-    __log "Loading modules from .bashrc.d"
-    for f in ~/.bashrc.d/*; do
-        __log "Loading $f"
-        source $f;
-    done
+
+### Homebrew stuff ###
+__log "00-homebrew start"
+
+HOMEBREW="/usr/local/bin/brew"
+[[ "$(uname -a)" == "Linux" ]] && {
+    HOMEBREW="~/.linuxbrew/bin/brew"
+}
+
+if [ -x "$HOMEBREW" ] ; then
+    BREW_PREFIX=$($HOMEBREW --prefix)
+    # Make sure brew path comes first so its executables are found before defaults.
+    PATH="${BREW_PREFIX}/bin:${BREW_PREFIX}/sbin:${PATH}"
+fi
+
+### bash-completion ###
+__log "00-homebrew bash-completion"
+if [ -f "${BREW_PREFIX}/etc/bash_completion" ]; then
+    # shellcheck disable=SC1090
+    . "${BREW_PREFIX}/etc/bash_completion"
+fi
+
+if [ -f /etc/bash_completion ]; then
+    # shellcheck disable=SC1091
+    . /etc/bash_completion
+fi
+
+### python ###
+export PIP_RESPECT_VIRTUALENV=true
+export PYTHONDONTWRITEBYTECODE=true
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+# `pip install --user` installs to ~/.local
+if [[ -d ~/.local/bin ]]; then
+    export PATH="~/.local/bin:${PATH}"
+fi
+
+if [ -n "$(which pyenv 2>/dev/null)" ] ; then
+    __log "pyenv init"
+    eval "$(pyenv init -)"
+fi
+
+if [[ -x /usr/local/bin/hub ]]; then
+    alias git=hub
 fi
 
 # use .localrc for settings specific to one system
@@ -37,6 +74,31 @@ fi
 
 ### Anything below this only applies to an interactive session.  ###
 [[ $- = *i* ]] || return
+
+source ~/.bash_prompt
+
+function reload() {
+    source ~/.bash_profile
+}
+
+[[ -n "$ITERM2_PROFILE" ]] && {
+    iterm2_set_profile() {
+        local profile="$1"
+        printf "\x1B]1337;SetProfile=${profile}\x07"
+        ITERM_PROFILE="$profile"
+    }
+
+
+    bg_light() {
+        iterm2_set_profile "Light"
+        clear
+    }
+
+    bg_dark() {
+        iterm2_set_profile "Dark"
+        clear
+    }
+}
 
 # Handle resizes gracefully.
 shopt -s checkwinsize
