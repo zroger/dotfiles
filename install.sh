@@ -2,34 +2,30 @@
 
 export DOTFILES
 DOTFILES="$(dirname "${BASH_SOURCE[0]}")"
-# shellcheck source=lib/installer.sh
-source "${DOTFILES}/lib/installer.sh"
 
 
-mac_os && {
-    header "macos stuff"
-    homebrew
-    brew bundle install --file="${DOTFILES}/macos/Brewfile"
+[[ "$(uname -s)" == "Darwin" ]] && {
+    BREW="/usr/local/bin/brew"
+    [ -x "$BREW" ] || {
+        echo "==> Installing homebrew for mac"
+        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    }
 }
 
-linux && {
-    header "linux stuff"
-    linuxbrew
-    brew bundle install --file="${DOTFILES}/linux/Brewfile"
+[[ "$(uname -s)" == "Linux" ]] && {
+    BREW="$HOME/.linuxbrew/bin/brew"
+    [ -x "$BREW" ] || {
+        echo "==> Installing linuxbrew"
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+    }
 }
 
-header "symlinks"
-symlink bash_profile ~/.bash_profile
-symlink bash/bashrc ~/.bashrc
-symlink bash/bashrc.d ~/.bashrc.d
-symlink psqlrc ~/.psqlrc
-symlink tmux/tmux.conf ~/.tmux.conf
+$BREW list ansible > /dev/null || {
+    echo "==> Installing ansible via homebrew"
+    $BREW install ansible
+}
 
-header "git"
-symlink git/gitconfig ~/.gitconfig
-symlink git/gitignore ~/.gitignore
+# TODO: linuxbrew
+ANSIBLE_PLAYBOOK="$($BREW --prefix ansible)/bin/ansible-playbook"
 
-header "vim"
-symlink vim/vimrc ~/.vimrc
-symlink vim/autoload/plug.vim ~/.vim/autoload/plug.vim
-vim "+PlugInstall" "+qall"
+"${ANSIBLE_PLAYBOOK}" -c local -i localhost, "${DOTFILES}/playbook.yml"
