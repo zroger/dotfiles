@@ -48,6 +48,8 @@
           dest: .gitconfig
         - src: git/gitignore
           dest: .gitignore
+        - src: git/git_template
+          dest: .git_template
 
     - name: vim directories
       file:
