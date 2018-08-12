@@ -21,16 +21,13 @@ Plug 'pangloss/vim-javascript'
 " Syntax
 Plug 'juvenn/mustache.vim'
 Plug 'kchmck/vim-coffee-script'
-Plug 'nono/vim-handlebars'
-"Plug 'mitsuhiko/vim-jinja'
-Plug 'hdima/python-syntax'
+Plug 'nono/vim-handlebars' "Plug 'mitsuhiko/vim-jinja' Plug 'hdima/python-syntax'
 Plug 'vim-scripts/groovy.vim'
 Plug 'tpope/vim-liquid'
 Plug 'stephpy/vim-yaml'
 
 " Color schemes
 Plug 'altercation/vim-colors-solarized'
-Plug 'morhetz/gruvbox'
 
 call plug#end()
 
@@ -125,8 +122,6 @@ endfunction
 " }}}
 
 " color settings ---------------------------------- {{{{{{
-colorscheme solarized
-
 " Use dark as the default background. Might need to add more conditions
 " in which to trigger the light background.
 if $ITERM_PROFILE == 'Light'
@@ -135,19 +130,26 @@ else
   set background=dark
 endif
 
-" From https://github.com/vim-scripts/Solarized#option-details
+" Customizations to make solarized look better in iTerm with the patched
+" Solarized Dark theme.
 "
-" This tells Solarized to use the 256 degraded color mode if running in a
-" 256 color capable terminal. Otherwise, if set to 16 it will use the
-" terminal emulators colorscheme.
-"
-" I assume I'm always using this vimrc within such a terminal.
+" https://github.com/mbadolato/iTerm2-Color-Schemes#solarized-dark---patched
+" https://github.com/vim-scripts/Solarized#option-details
+
+" If set to 16 it will use the terminal emulators colorscheme.
 let g:solarized_termcolors=16
+
+" This colorscheme will use ANSI 8 as the background, which is now a brighter
+" color than the terminal background, so instead we just use a transparent bg.
+let g:solarized_termtrans=1
+
+colorscheme solarized
+
+" }}}}}}
 
 "" Include local customizations.
 if filereadable(expand("~/.vimrc.local"))
   source ~/.vimrc.local
 endif
-" }}}}}}
 
 " vim: set filetype=vim
