@@ -58,6 +58,8 @@ __ps1_git_info() {
 
 
 __build_prompts() {
+    local exit_code=$?
+
     local ps1_bg="\e[48;5;0m"  #base02
     local ps1_bg_as_fg="\e[38;5;0m"  #base02
 
@@ -65,6 +67,12 @@ __build_prompts() {
         ps1_bg="\e[48;5;7m"  #base02
         ps1_bg_as_fg="\e[38;5;7m"  #base02
     fi
+
+    local ssh_bg="\e[48;5;3m"
+    local ssh_bg_as_fg="\e[38;5;3m"
+
+    local local_bg="\e[48;5;10m"
+    local local_bg_as_fg="\e[38;5;10m"
 
     local black="\e[38;5;0m"
     local red="\e[38;5;1m"
@@ -96,18 +104,28 @@ __build_prompts() {
 
     local reset="\e[0m"
 
+
     # Always start on a clean line.
     PS1="\n"
 
     # PS1 line 1
     PS1+="\[${ps1_bg}\]"
-    PS1+="\$(__ps1_exit_code \$? \"\[${green}\]\" \"\[${red}\]\" )"
-    PS1+=" \[${yellow}\]\$(__ps1_pwd) "
+
+    if [[ -n "${SSH_CONNECTION}" ]]; then
+        #PS1+="\[${ssh_bg}${base02}\] ⇄  \h ${ssh_bg_as_fg}${ps1_bg}\] "
+        PS1+="\[${ssh_bg}${black}\] @ \h ${ssh_bg_as_fg}${ps1_bg}\] "
+        PS1+="\[${yellow}\]\$(__ps1_pwd) "
+    else
+        PS1+="\[${local_bg}${base2}\]  ${local_bg_as_fg}${ps1_bg}\] "
+        PS1+="\[${yellow}\]\$(__ps1_pwd) "
+    fi
+
     PS1+=" \[${blue}\]\$(__ps1_git_info) "
     PS1+="\[\e[K\]"  # Fill the rest of the line w/ the bg color.
 
     # PS1 line 2
     PS1+="\n"
+    PS1+="\$(__ps1_exit_code $exit_code \"\[${green}\]\" \"\[${red}\]\" )"
     PS1+="\[${base1}\] \D{%H:%M:%S} "  # Time
     PS1+="\$ \[$reset\]"
     PS1+="\[${ps1_bg_as_fg}\]"  # End prompt with powerline arrow.
