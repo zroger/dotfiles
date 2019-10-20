@@ -11,11 +11,11 @@ brew 'bash-completion'
 brew 'git'
 brew 'hub'
 brew 'jq'
-brew 'macvim'
 brew 'mitmproxy'
 brew 'shellcheck'
 brew 'the_silver_searcher'
 brew 'tmux'
+brew 'vim'
 
 # gpg setup
 brew 'gnupg'
@@ -30,14 +30,13 @@ brew 'vagrant-completion'
 
 # Casks...
 tap 'caskroom/cask'
-cask '1password'
 cask 'alfred'
 cask 'caffeine'
 cask 'google-chrome'
 cask 'iterm2'
-cask 'vagrant'
-cask 'virtualbox'
-cask 'vmware-fusion'
+
+# App store...
+brew mas
 
 tap 'caskroom/fonts'
 cask 'font-sourcecodepro-nerd-font'

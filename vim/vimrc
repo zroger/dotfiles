@@ -1,8 +1,11 @@
 call plug#begin()
 Plug 'tpope/vim-sensible'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'kien/ctrlp.vim'
-Plug 'FelikZ/ctrlp-py-matcher'
+"Plug 'kien/ctrlp.vim'
+"Plug 'FelikZ/ctrlp-py-matcher'
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
+
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
@@ -11,23 +14,38 @@ Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
-Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'leafgarland/typescript-vim'
+Plug 'gutenye/json5.vim'
+Plug 'ryanoasis/vim-devicons'
 
-" Syntax
-Plug 'juvenn/mustache.vim'
+" Syntax Plug 'juvenn/mustache.vim'
 Plug 'kchmck/vim-coffee-script'
-Plug 'nono/vim-handlebars' "Plug 'mitsuhiko/vim-jinja' Plug 'hdima/python-syntax'
+Plug 'nono/vim-handlebars'
+"Plug 'mitsuhiko/vim-jinja'
+Plug 'hdima/python-syntax'
 Plug 'vim-scripts/groovy.vim'
 Plug 'tpope/vim-liquid'
 Plug 'stephpy/vim-yaml'
+Plug 'vim-scripts/nginx.vim'
+
+" Used for yaml + jinja
+Plug 'saltstack/salt-vim'
 
 " Color schemes
 Plug 'altercation/vim-colors-solarized'
+Plug 'noahfrederick/vim-noctu'
+Plug 'patstockwell/vim-monokai-tasty'
+Plug 'jeffkreeftmeijer/vim-dim'
+Plug 'chriskempson/base16-vim'
+
+Plug 'w0rp/ale'
 
 call plug#end()
 
@@ -37,33 +55,41 @@ set ruler
 set exrc        " enable per-directory .vimrc files
 set secure      " disable unsafe commands in local .vimrc files
 set colorcolumn=72,80
+set cursorline
 
 set tabstop=8
 set expandtab
 set shiftwidth=4
 set softtabstop=4
 
-" General FileType settings ------------------ {{{
+" General FileType settings ------------------
 au BufNewFile,BufRead *.es6 set filetype=javascript
+
+" Typescript evaluates tsconfig.json w/ json5.
+au BufNewFile,BufRead tsconfig.json set filetype=json5
 
 augroup FTOptions
     autocmd!
     autocmd FileType netrw nnoremap q :bp\|bd #<CR>
-    autocmd FileType * if exists("+omnifunc") && &omnifunc == "" 
+    autocmd FileType * if exists("+omnifunc") && &omnifunc == ""
 	\ | setlocal omnifunc=syntaxcomplete#Complete | endif
     autocmd FileType * if exists("+completefunc") && &completefunc == ""
 	\ | setlocal completefunc=syntaxcomplete#Complete | endif
 augroup END
-" }}}
+"
 
-" Vimscript file settings -------------------- {{{
+" Vimscript file settings --------------------
 augroup filetype_vim
     autocmd!
     autocmd FileType vim setlocal foldmethod=marker
 augroup END
-" }}}
+"
 
-" ctrlp -------------------------------------- {{{
+" Dont re-indent python files after a :
+autocmd FileType python setlocal indentkeys-=<:>
+autocmd FileType python setlocal indentkeys-=:
+
+" ctrlp --------------------------------------
 " Swap enter and ctrl+t in ctrlp window.
 " Enter will open in a new tab, ctrl+t will open in same window.
 let g:ctrlp_prompt_mappings = {
@@ -97,14 +123,14 @@ if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
 
-" }}}
+"
 
-" airline {{{
+" airline
 "let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1 
-" }}}
+let g:airline_powerline_fonts = 1
+"
 
-" nerdtree ---------------------------------- {{{
+" nerdtree ----------------------------------
 let NERDTreeMinimalUI=1
 let NERDTreeQuitOnOpen=1
 let NERDTreeRespectWildIgnore=1
@@ -119,9 +145,9 @@ function! NERDTreeToggleInCurDir()
     exe ":NERDTreeFind"
   endif
 endfunction
-" }}}
 
-" color settings ---------------------------------- {{{{{{
+
+" color settings ----------------------------------
 " Use dark as the default background. Might need to add more conditions
 " in which to trigger the light background.
 if $ITERM_PROFILE == 'Light'
@@ -137,19 +163,22 @@ endif
 " https://github.com/vim-scripts/Solarized#option-details
 
 " If set to 16 it will use the terminal emulators colorscheme.
-let g:solarized_termcolors=16
+" let g:solarized_termcolors=16
 
 " This colorscheme will use ANSI 8 as the background, which is now a brighter
 " color than the terminal background, so instead we just use a transparent bg.
-let g:solarized_termtrans=1
+" let g:solarized_termtrans=1
 
-colorscheme solarized
+"colorscheme solarized
+colorscheme zroger16
+let g:airline_theme='minimalist'
 
-" }}}}}}
+"
 
 "" Include local customizations.
 if filereadable(expand("~/.vimrc.local"))
   source ~/.vimrc.local
 endif
 
-" vim: set filetype=vim
+let g:dotfiles_dir = fnamemodify(resolve(expand("<sfile>:p")), ":h:h")
+" vi: set filetype=vim
