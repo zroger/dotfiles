@@ -1,8 +1,4 @@
-vim/.netrwhist
-vim/bundle/
-vim/plugged/
-
-*.old
-*.bak
-
-*.retry
+.DS_Store
+*.swo
+*.swp
+Brewfile.lock.json

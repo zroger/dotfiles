@@ -1,3 +1,8 @@
+[user]
+  email=zroger@users.noreply.github.com
+  name=Roger López
+  signingkey=6473CD48E3B86680
+
 [color]
   diff = auto
   status = auto
@@ -5,7 +10,7 @@
   ui = auto
 
 [core]
-  excludesfile = ~/.gitignore
+  excludesfile = ~/.config/git/ignore
   autocrlf = input
 
 [apply]
@@ -36,9 +41,6 @@
 [push]
   default = current
 
-[include]
-  path = .gitconfig.local
-
 [hub]
 protocol = https
 
@@ -49,4 +51,4 @@ gpgsign = true
 program = /usr/local/bin/gpg
 
 [init]
-templatedir = ~/.git_template
+templatedir = ~/.config/git/template

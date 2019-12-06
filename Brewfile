@@ -1,4 +1,6 @@
-tap 'homebrew/bundle'
+# dotfile management
+tap 'thoughtbot/formulae'
+brew 'thoughtbot/formulae/rcm'
 
 # xz is a dependency of the_silver_searcher and unless it is installed
 # as `universal`, it can mess up Ruby stuff.
@@ -11,7 +13,6 @@ brew 'bash-completion'
 brew 'git'
 brew 'hub'
 brew 'jq'
-brew 'mitmproxy'
 brew 'shellcheck'
 brew 'the_silver_searcher'
 brew 'tmux'
@@ -19,24 +20,19 @@ brew 'vim'
 
 # gpg setup
 brew 'gnupg'
-brew 'gpg-agent'
 brew 'pinentry'
 brew 'pinentry-mac'
 
 # Completion scripts...
 brew 'bash-completion'
-brew 'tmuxinator-completion'
-brew 'vagrant-completion'
 
 # Casks...
-tap 'caskroom/cask'
 cask 'alfred'
 cask 'caffeine'
-cask 'google-chrome'
 cask 'iterm2'
 
 # App store...
-brew mas
+brew 'mas'
 
-tap 'caskroom/fonts'
+tap 'homebrew/cask-fonts'
 cask 'font-sourcecodepro-nerd-font'

@@ -18,34 +18,6 @@ export DOTFILES
 DOTFILES="$(dirname "$(dirname "$(readlink "${HOME}/.bashrc")")")"
 
 export PATH
-PATH="${DOTFILES}/bin:${PATH}"
-
-
-### Homebrew stuff ###
-__log "00-homebrew start"
-
-HOMEBREW="/usr/local/bin/brew"
-[[ "$(uname -a)" == "Linux" ]] && {
-    HOMEBREW="~/.linuxbrew/bin/brew"
-}
-
-if [ -x "$HOMEBREW" ] ; then
-    BREW_PREFIX=$($HOMEBREW --prefix)
-    # Make sure brew path comes first so its executables are found before defaults.
-    PATH="${BREW_PREFIX}/bin:${BREW_PREFIX}/sbin:${PATH}"
-fi
-
-### bash-completion ###
-__log "00-homebrew bash-completion"
-if [ -f "${BREW_PREFIX}/etc/bash_completion" ]; then
-    # shellcheck disable=SC1090
-    . "${BREW_PREFIX}/etc/bash_completion"
-fi
-
-if [ -f /etc/bash_completion ]; then
-    # shellcheck disable=SC1091
-    . /etc/bash_completion
-fi
 
 ### python ###
 export PIP_RESPECT_VIRTUALENV=true
@@ -74,12 +46,6 @@ fi
 
 ### Anything below this only applies to an interactive session.  ###
 [[ $- = *i* ]] || return
-
-source ~/.bash_prompt
-
-function reload() {
-    source ~/.bash_profile
-}
 
 [[ -n "$ITERM2_PROFILE" ]] && {
     iterm2_set_profile() {

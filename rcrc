@@ -1,0 +1,2 @@
+EXCLUDES="*.md Brewfile .local/*"
+DOTFILES_DIRS="$HOME/dotfiles"
