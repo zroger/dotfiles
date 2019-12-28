@@ -1,54 +1,35 @@
+# Default identity.
+# This can be overridden via conditional includes (e.g. based on GITDIR path)
+# or directly configured per-repository.
+#
+# n.b. I don't specify a signingKey, instead relying on tht GPG agent being
+# able to resolve a single key based on the email used on the commit.
 [user]
-  email=zroger@users.noreply.github.com
-  name=Roger López
-  signingkey=6473CD48E3B86680
-
-[color]
-  diff = auto
-  status = auto
-  branch = auto
-  ui = auto
-
-[core]
-  excludesfile = ~/.config/git/ignore
-  autocrlf = input
-
-[apply]
-  whitespace = nowarn
-
-[alias]
-  st = status
-  ci = commit
-  br = branch
-  co = checkout
-  df = diff
-  lg = log -p
-  ls = ls-files
-  ; delete merged branches
-  branch-cleanup = "!git branch --merged | grep -v '*' | xargs -L1 git branch -d"
-
-[diff]
-  tool = diffmerge
-[difftool "diffmerge"]
-  cmd = diffmerge --nosplash \"$LOCAL\" \"$REMOTE\"
-
-[merge]
-  tool = diffmerge
-[mergetool "diffmerge"]
-  cmd = diffmerge --nosplash --result="$MERGED" "$LOCAL" "$(if test -f "$BASE"; then echo "$BASE"; else echo "$LOCAL"; fi)" "$REMOTE" --title1="Mine" --title2="Merged" --title3="Theirs"
-  trustExitCode = true
-
-[push]
-  default = current
-
-[hub]
-protocol = https
+  email = zroger@users.noreply.github.com
+  name = Roger López
 
 [commit]
-gpgsign = true
+  # Sign all commits.
+  gpgsign = true
 
-[gpg]
-program = /usr/local/bin/gpg
+[core]
+  # Personal gitignore file for all repos.
+  excludesfile = ~/.config/git/ignore
+
+[alias]
+  # delete merged branches
+  rm-merged = "!git branch --merged | grep -v '*' | xargs -L1 git branch -d"
+
+[log]
+  # Assume --show-signature w/ git-log, git-show, and git-whatchanged.
+  showSignature = true
 
 [init]
-templatedir = ~/.config/git/template
+  # Use this directory as a template when initializing new repositories.
+  # See the included README in that directory.
+  templatedir = ~/.config/git/template
+
+[include]
+  # Include config files from config.d.
+  # Useful for installing dotfiles from multiple sources.
+  path = config.d/*.conf
