@@ -2,17 +2,14 @@
 tap 'thoughtbot/formulae'
 brew 'thoughtbot/formulae/rcm'
 
-# xz is a dependency of the_silver_searcher and unless it is installed
-# as `universal`, it can mess up Ruby stuff.
-# http://www.nokogiri.org/tutorials/installing_nokogiri.html#mac_os_x
-brew 'xz', args: ['universal']
-
 brew 'awscli'
 brew 'coreutils'
 brew 'bash-completion'
 brew 'git'
 brew 'hub'
 brew 'jq'
+brew 'pandoc'
+brew 'reattach-to-user-namespace'
 brew 'shellcheck'
 brew 'the_silver_searcher'
 brew 'tmux'
@@ -20,7 +17,7 @@ brew 'vim'
 
 # gpg setup
 brew 'gnupg'
-brew 'pinentry'
+brew 'hopenpgp-tools'
 brew 'pinentry-mac'
 
 # Completion scripts...
@@ -29,6 +26,8 @@ brew 'bash-completion'
 # Casks...
 cask 'alfred'
 cask 'caffeine'
+cask 'docker'
+cask '1password'
 cask 'iterm2'
 
 # App store...

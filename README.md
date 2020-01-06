@@ -6,14 +6,14 @@
 
 ```sh
 # clone this repo
-git clone https://github.com/zroger/dotfiles.git ~/dotfiles/public
+git clone https://github.com/zroger/dotfiles.git ~/dotfiles
 
 # install homebrew
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 # install homebrew packages
-brew bundle install --file=~/dotfiles/public/Brewfile --no-lock
+brew bundle install --file=~/dotfiles/Brewfile --no-lock
 
 # install dotfiles
-env RCRC=$HOME/dotfiles/public/rcrc rcup
+~/dotfiles/install.sh
 ```

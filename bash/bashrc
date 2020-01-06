@@ -1,3 +1,5 @@
+echo "$(date +%s.%S) - loading ${BASH_SOURCES[0]}"
+
 ### Basic config ###
 export CLICOLOR=1
 export EDITOR=$(which vim 2>/dev/null)
@@ -21,7 +23,8 @@ if [ -n "$(which pyenv 2>/dev/null)" ] ; then
     eval "$(pyenv init -)"
 fi
 
-for f in ~/.config/bashrc.d/*.sh; do
+for f in ~/.config/bash/bashrc.d/*.sh; do
+    echo "$(date +%s.%S) - loading ${f}"
     source "$f"
 done
 
