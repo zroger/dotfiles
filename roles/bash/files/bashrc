@@ -1,0 +1,26 @@
+### Basic config ###
+export CLICOLOR=1
+export EDITOR=$(which vim 2>/dev/null)
+
+export PATH
+
+# `pip install --user` installs to ~/.local
+if [[ -d ~/.local/bin ]]; then
+    export PATH="${HOME}/.local/bin:${PATH}"
+fi
+
+if [[ -d ~/bin ]]; then
+    export PATH="${HOME}/bin:${PATH}"
+fi
+
+for f in ~/.config/bashrc.d/*.sh; do
+    if [[ -f $f ]]; then
+        source "$f"
+    fi
+done
+
+### Anything below this only applies to an interactive session.  ###
+[[ $- = *i* ]] || return
+
+# Handle resizes gracefully.
+shopt -s checkwinsize

@@ -1,0 +1,38 @@
+---
+
+- community.general.homebrew:
+    name: bash
+    state: latest
+
+- ansible.builtin.lineinfile:
+    path: /etc/shells
+    line: /usr/local/bin/bash
+  become: yes
+
+- ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    shell: /usr/local/bin/bash
+  become: yes
+
+- ansible.builtin.copy:
+    src: bashrc
+    dest: "{{ansible_env.HOME}}/.bashrc"
+
+- ansible.builtin.copy:
+    src: bash_profile
+    dest: "{{ansible_env.HOME}}/.bash_profile"
+
+- ansible.builtin.file:
+    path: "{{ansible_env.HOME}}/.config/bashrc.d/"
+    state: directory
+    recurse: yes
+
+- ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.config/bashrc.d/{{ item }}"
+  loop:
+    - 00-homebrew.sh
+    - 10-prompt.sh
+    - 50-fzf.sh
+    - 50-git.sh
+

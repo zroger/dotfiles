@@ -1,184 +1,80 @@
 call plug#begin()
 Plug 'tpope/vim-sensible'
-Plug 'christoomey/vim-tmux-navigator'
-"Plug 'kien/ctrlp.vim'
-"Plug 'FelikZ/ctrlp-py-matcher'
-Plug '/usr/local/opt/fzf'
-Plug 'junegunn/fzf.vim'
-
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-vinegar'
-"Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+
+" Display
+Plug 'cocopon/iceberg.vim'
+Plug 'itchyny/lightline.vim'
+
+" Syntax, etc
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'ycm-core/YouCompleteMe'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
-Plug 'leafgarland/typescript-vim'
-Plug 'gutenye/json5.vim'
-Plug 'ryanoasis/vim-devicons'
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+Plug 'cespare/vim-toml'
 
-" Syntax Plug 'juvenn/mustache.vim'
-Plug 'kchmck/vim-coffee-script'
-Plug 'nono/vim-handlebars'
-"Plug 'mitsuhiko/vim-jinja'
-Plug 'hdima/python-syntax'
-Plug 'vim-scripts/groovy.vim'
-Plug 'tpope/vim-liquid'
-Plug 'stephpy/vim-yaml'
-Plug 'vim-scripts/nginx.vim'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 
-" Used for yaml + jinja
-Plug 'saltstack/salt-vim'
-
-" Color schemes
-Plug 'altercation/vim-colors-solarized'
-Plug 'noahfrederick/vim-noctu'
-Plug 'patstockwell/vim-monokai-tasty'
-Plug 'jeffkreeftmeijer/vim-dim'
-Plug 'chriskempson/base16-vim'
-
-Plug 'w0rp/ale'
-
+Plug 'ctrlpvim/ctrlp.vim'
 call plug#end()
 
-" basic settings
+
+" coc
+" =============================================
+let g:coc_global_extensions = [
+  \ 'coc-cfn-lint',
+  \ 'coc-css',
+  \ 'coc-cssmodules',
+  \ 'coc-git',
+  \ 'coc-html',
+  \ 'coc-json',
+  \ 'coc-markdownlint',
+  \ 'coc-python',
+  \ 'coc-sh',
+  \ 'coc-tsserver',
+  \ 'coc-yaml',
+  \ ]
+
+
+" Display Settings
+" =============================================
+set cursorline
 set number
 set ruler
-set exrc        " enable per-directory .vimrc files
-set secure      " disable unsafe commands in local .vimrc files
-set colorcolumn=72,80
-set cursorline
 
-set tabstop=8
-set expandtab
-set shiftwidth=4
-set softtabstop=4
-
-" General FileType settings ------------------
-au BufNewFile,BufRead *.es6 set filetype=javascript
-
-" Typescript evaluates tsconfig.json w/ json5.
-au BufNewFile,BufRead tsconfig.json set filetype=json5
-
-augroup FTOptions
-    autocmd!
-    autocmd FileType netrw nnoremap q :bp\|bd #<CR>
-    autocmd FileType * if exists("+omnifunc") && &omnifunc == ""
-	\ | setlocal omnifunc=syntaxcomplete#Complete | endif
-    autocmd FileType * if exists("+completefunc") && &completefunc == ""
-	\ | setlocal completefunc=syntaxcomplete#Complete | endif
-augroup END
-"
-
-" Vimscript file settings --------------------
-augroup filetype_vim
-    autocmd!
-    autocmd FileType vim setlocal foldmethod=marker
-augroup END
-"
-
-" Dont re-indent python files after a :
-autocmd FileType python setlocal indentkeys-=<:>
-autocmd FileType python setlocal indentkeys-=:
-
-" ctrlp --------------------------------------
-" Swap enter and ctrl+t in ctrlp window.
-" Enter will open in a new tab, ctrl+t will open in same window.
-let g:ctrlp_prompt_mappings = {
-    \ 'AcceptSelection("e")': ['<c-t>'],
-    \ 'AcceptSelection("t")': ['<cr>'],
-    \ }
-
-let g:ctrlp_custom_ignore = {
-    \ 'dir': '\v[\/](doc\/build|bower_components)\/.*',
-    \ 'file': '\v\.(pyc)$',
-    \ }
-
-"let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
-
-" Set delay to prevent extra search
-let g:ctrlp_lazy_update = 350
-
-" Do not clear filenames cache, to improve CtrlP startup
-" You can manualy clear it by <F5>
-let g:ctrlp_clear_cache_on_exit = 0
-
-" Set no file limit, we are building a big project
-let g:ctrlp_max_files = 0
-
-" Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
-if executable('ag')
-  " Use Ag over Grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+" See https://github.com/tmux/tmux/issues/1246
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
 endif
 
-"
+set background=dark
+colorscheme iceberg
+let g:lightline = {'colorscheme': 'iceberg'}
 
-" airline
-"let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
-"
+let g:netrw_list_hide = join([
+  \ netrw_gitignore#Hide(),
+  \ '.*\.sw.?$',
+  \ '\.git/$',
+  \ ], ',')
 
-" nerdtree ----------------------------------
-let NERDTreeMinimalUI=1
-let NERDTreeQuitOnOpen=1
-let NERDTreeRespectWildIgnore=1
-let NERDTreeIgnore=['__pycache__', '\.pyc$', '\~$']
-
-map - :call NERDTreeToggleInCurDir()<CR>
-function! NERDTreeToggleInCurDir()
-  " If NERDTree is open in the current buffer
-  if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
-    exe ":NERDTreeClose"
-  else
-    exe ":NERDTreeFind"
-  endif
-endfunction
+" Always show the tabline
+set showtabline=2
 
 
-" color settings ----------------------------------
-" Use dark as the default background. Might need to add more conditions
-" in which to trigger the light background.
-if $ITERM_PROFILE == 'Light'
-  set background=light
-else
-  set background=dark
-endif
+" Mappings
+" =============================================
 
-" Customizations to make solarized look better in iTerm with the patched
-" Solarized Dark theme.
-"
-" https://github.com/mbadolato/iTerm2-Color-Schemes#solarized-dark---patched
-" https://github.com/vim-scripts/Solarized#option-details
+" Open netrw explorer over the same tab
+nnoremap _ :Explore<CR>
 
-" If set to 16 it will use the terminal emulators colorscheme.
-" let g:solarized_termcolors=16
+" Open netrw explorer in a new tab
+nnoremap - :Texplore<CR>
 
-" This colorscheme will use ANSI 8 as the background, which is now a brighter
-" color than the terminal background, so instead we just use a transparent bg.
-" let g:solarized_termtrans=1
-
-"colorscheme solarized
-colorscheme zroger16
-let g:airline_theme='minimalist'
-
-"
-
-"" Include local customizations.
-if filereadable(expand("~/.vimrc.local"))
-  source ~/.vimrc.local
-endif
-
-let g:dotfiles_dir = fnamemodify(resolve(expand("<sfile>:p")), ":h:h")
-" vi: set filetype=vim
+" Toggle folds with <space> in normal mode
+nnoremap <space><space> za

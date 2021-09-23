@@ -1,0 +1,21 @@
+---
+
+- community.general.homebrew:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - git
+    - gnupg
+    - hub
+
+- ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/git/"
+    state: directory
+    recurse: yes
+
+- ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.config/git/{{ item }}"
+  loop:
+    - config
+    - ignore

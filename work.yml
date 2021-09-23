@@ -1,0 +1,16 @@
+---
+
+- hosts: work
+
+  roles:
+    - name: bash
+      tags: [bash]
+
+    - name: git
+      tags: [git]
+
+    - name: gnupg
+      tags: [gnupg]
+
+    - name: python
+      tags: [python]

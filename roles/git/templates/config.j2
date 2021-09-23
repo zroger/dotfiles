@@ -1,0 +1,17 @@
+[user]
+name = "{{ git_name }}"
+email = "{{ git_email }}"
+
+[core]
+excludesfile = ~/.config/git/ignore
+
+[commit]
+# GPG sign all commits. The key to be used is selected based on the
+# configured email address, similar to the way SSH keys are selected.
+gpgsign = true
+
+[gpg]
+program = /usr/local/bin/gpg
+
+[init]
+defaultBranch = main

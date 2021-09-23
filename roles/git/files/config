@@ -1,0 +1,17 @@
+[user]
+name=Roger López
+email=zroger@users.noreply.github.com
+
+[core]
+excludesfile = ~/.config/git/ignore
+
+[commit]
+# GPG sign all commits. The key to be used is selected based on the
+# configured email address, much like SSH keys are selected.
+gpgsign = true
+
+[gpg]
+program = /usr/local/bin/gpg
+
+[init]
+defaultBranch = main

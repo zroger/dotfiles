@@ -1,2 +1,5 @@
 # Include files from config.d
 Include config.d/*.conf
+
+Host *
+    IdentityFile ~/.ssh/nike2.pub

@@ -1,0 +1,26 @@
+---
+
+- community.general.homebrew:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - gnupg
+    - pinentry-mac
+
+- ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.gnupg/"
+    state: directory
+    mode: 0700
+
+- ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.gnupg/{{ item }}"
+    mode: 0600
+  loop:
+    - gpg.conf
+    - gpg-agent.conf
+
+- ansible.builtin.copy:
+    src: bashrc.sh
+    dest: "{{ ansible_env.HOME }}/.config/bashrc.d/gnupg.sh"
+    mode: 0600

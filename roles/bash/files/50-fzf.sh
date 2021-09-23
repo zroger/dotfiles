@@ -1,7 +1,5 @@
 # Setup fzf
 # ---------
-test -f /usr/local/opt/fzf/bin/fzf || return
-
 if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
   export PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
 fi

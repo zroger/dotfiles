@@ -1,0 +1,24 @@
+---
+
+- community.general.homebrew:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - pyenv
+    - poetry
+
+- ansible.builtin.shell:
+    cmd: /usr/local/bin/pyenv install {{ item }}
+    creates: "{{ ansible_env.HOME }}/.pyenv/versions/{{ item }}/bin/python"
+  loop:
+    - 3.8.12
+
+- ansible.builtin.copy:
+    src: bashrc.sh
+    dest: "{{ ansible_env.HOME }}/.config/bashrc.d/python.sh"
+    mode: 0600
+
+- ansible.builtin.copy:
+    src: poetry.toml
+    dest: "{{ ansible_env.HOME }}/Library/Application Support/pypoetry/config.toml"
+    mode: 0600

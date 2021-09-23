@@ -60,21 +60,6 @@ __ps1_git_info() {
 __build_prompts() {
     local exit_code=$?
 
-    local ps1_bg="\e[48;5;0m"  #base02
-    local ps1_bg_as_fg="\e[38;5;0m"  #base02
-
-    if [[ "${ITERM_PROFILE}" == "Light" ]]; then
-        ps1_bg="\e[48;5;7m"  #base02
-        ps1_bg_as_fg="\e[38;5;7m"  #base02
-    fi
-
-    local ssh_bg="\e[48;5;3m"
-    local ssh_bg_as_fg="\e[38;5;3m"
-
-    local local_bg="\e[48;5;10m"
-    local local_bg_as_fg="\e[38;5;10m"
-
-    local black="\e[38;5;0m"
     local red="\e[38;5;1m"
     local green="\e[38;5;2m"
     local yellow="\e[38;5;3m"
@@ -82,24 +67,8 @@ __build_prompts() {
     local magenta="\e[38;5;5m"
     local cyan="\e[38;5;6m"
     local white="\e[38;5;7m"
-    local bright_black="\e[38;5;8m"
-    local bright_red="\e[38;5;9m"
-    local bright_green="\e[38;5;10m"
-    local bright_yellow="\e[38;5;11m"
-    local bright_blue="\e[38;5;12m"
-    local bright_magenta="\e[38;5;13m"
-    local bright_cyan="\e[38;5;14m"
-    local bright_white="\e[38;5;15m"
 
     # solarized aliases
-    local base03="\e[38;5;8m"
-    local base02="\e[38;5;0m"
-    local base01="\e[38;5;10m"
-    local base00="\e[38;5;11m"
-    local base0="\e[38;5;12m"
-    local base1="\e[38;5;14m"
-    local base2="\e[38;5;7m"
-    local base3="\e[38;5;15m"
     local orange="\e[38;5;9m"
     local violet="\e[38;5;13m"
 
@@ -108,48 +77,12 @@ __build_prompts() {
 
     # Always start on a clean line.
     PS1="\n"
-
-    ## PS1 line 1
-    #PS1+="\[${ps1_bg}\]"
-
-    #if [[ -n "${SSH_CONNECTION}" ]]; then
-    #    #PS1+="\[${ssh_bg}${base02}\] ⇄  \h ${ssh_bg_as_fg}${ps1_bg}\] "
-    #    PS1+="\[${ssh_bg}${black}\] @ \h ${ssh_bg_as_fg}${ps1_bg}\] "
-    #    PS1+="\[${yellow}\]\$(__ps1_pwd) "
-    #else
-    #    PS1+="\[${local_bg}${base2}\]  ${local_bg_as_fg}${ps1_bg}\] "
-    #    PS1+="\[${yellow}\]\$(__ps1_pwd) "
-    #fi
-
-    #PS1+=" \[${blue}\]\$(__ps1_git_info) "
-    #PS1+="\[\e[K\]"  # Fill the rest of the line w/ the bg color.
-
-    ## PS1 line 2
-    #PS1+="\n"
-    #PS1+="\$(__ps1_exit_code $exit_code \"\[${green}\]\" \"\[${red}\]\" )"
-    #PS1+="\[${base1}\] \D{%H:%M:%S} "  # Time
-    #PS1+="\$ \[$reset\]"
-    #PS1+="\[${ps1_bg_as_fg}\]"  # End prompt with powerline arrow.
-    #PS1+="\[${reset}\] "
-
-    # Command continuation prompt
-    PS2="\[${ps1_bg}\] … "
-    PS2+="\[${reset}\]\[${ps1_bg_as_fg}\]\[${reset}\] "
-
     PS1+="\[${white}\] "
     PS1+="\[${yellow}\]  \$(__ps1_pwd)"
     PS1+="\[${blue}\]  \$(__ps1_git_info)"
-    if [[ -z "$AWS_VAULT" && -n "$AWS_VAULT_LABEL" ]]; then
-        unset AWS_VAULT_LABEL
-    elif [[ -n "$AWS_VAULT" && -z "$AWS_VAULT_LABEL" ]]; then
-        local arn=$(aws sts get-caller-identity --query Arn --output text)
-        export AWS_VAULT_LABEL=$(echo "$arn" | cut -d: -f6)
-    fi
-    if [[ -n "$AWS_VAULT_LABEL" ]]; then
-        PS1+="\[${orange}\]  🔒\${AWS_VAULT_LABEL} "
-    fi
     PS1+="\[${reset}\]\n"
     PS1+="\$(__ps1_exit_code $exit_code \"\[${green}\]\" \"\[${red}\]\" )"
     PS1+="\[${cyan}\]  \D{%H:%M:%S} » \[${reset}\]  "
 }
+
 PROMPT_COMMAND=__build_prompts

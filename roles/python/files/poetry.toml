@@ -1,0 +1,3 @@
+[virtualenvs]
+# Use in-project virtualenvs for better editor support
+in-project = true
